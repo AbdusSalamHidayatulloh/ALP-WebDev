@@ -16,6 +16,7 @@ class Board extends Model
         'board_name'
     ];
 
+    //Pivot Board <-> Users
     public function memberBoards(): HasMany {
         return $this->hasMany(MemberBoard::class);
     }

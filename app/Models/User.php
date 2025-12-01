@@ -26,6 +26,7 @@ class User extends Authenticatable
         'password',
     ];
 
+    //Pivot User <-> Board
     public function memberBoards(): HasMany {
         return $this->hasMany(MemberBoard::class);
     }

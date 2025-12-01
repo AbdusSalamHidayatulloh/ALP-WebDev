@@ -18,7 +18,9 @@ class Card_Template extends Model
 
     // CustomFields <-> Card Template
     public function customFields(): BelongsToMany {
-        return $this->belongsToMany(Custom_Fields::class);
+        return $this->belongsToMany(Custom_Fields::class)
+                    ->using(FieldTemplates::class)
+                    ->withPivot('value');
     }
 
     public function fieldTemplate(): HasMany {

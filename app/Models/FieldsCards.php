@@ -1,5 +1,7 @@
 <?php
 
+//CUSTOM PIVOT TABLE
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;

@@ -18,14 +18,7 @@ class Card extends Model
         'list_id'
     ];
 
-    public function users(): HasMany {
-        return $this->hasMany(User::class);
-    }
-
-    public function labels(): HasMany {
-        return $this->hasMany(Label::class);
-    }
-
+    //Pivot Card <-> Custom Fields
     public function customFields(): BelongsToMany {
         return $this->belongsToMany(Custom_Fields::class)
                     ->using(FieldsCards::class)
@@ -34,6 +27,14 @@ class Card extends Model
 
     public function fieldsCard(): HasMany {
         return $this->hasMany(FieldsCards::class);
+    }
+
+    public function users(): HasMany {
+        return $this->hasMany(User::class);
+    }
+
+    public function labels(): HasMany {
+        return $this->hasMany(Label::class);
     }
 
     public function comments(): HasMany {
