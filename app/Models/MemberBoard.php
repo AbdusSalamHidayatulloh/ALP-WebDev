@@ -12,7 +12,8 @@ class MemberBoard extends Model
     protected $fillable = [
         'user_id',
         'board_id',
-        'role'
+        'role',
+        'isGuest'
     ];
 
     public function user(): BelongsTo {

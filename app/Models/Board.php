@@ -24,7 +24,7 @@ class Board extends Model
     public function users(): BelongsToMany {
         return $this->belongsToMany(User::class)
                     ->using(MemberBoard::class)
-                    ->withPivot('role');
+                    ->withPivot('role', 'isGuest');
     }
 
     public function labels(): HasMany {

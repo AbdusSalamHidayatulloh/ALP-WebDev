@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id('member_board_id');
             $table->foreignId('user_id')->constrained()->onDelete('Cascade');
             $table->foreignId('board_id')->constrained()->onDelete('Cascade');
+            $table->string('role');
+            $table->boolean('isGuest');
             $table->timestamps();
         });
     }
