@@ -32,7 +32,7 @@ class User extends Authenticatable
     }
 
     public function boards(): BelongsToMany {
-        return $this->belongsToMany(Board::class)
+        return $this->belongsToMany(Board::class, 'member_board')
                     ->using(MemberBoard::class)
                     ->withPivot('role', 'isGuest');
     }

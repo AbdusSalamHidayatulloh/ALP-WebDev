@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class MemberBoard extends Model
 {
+
+    protected $table = 'member_board';
     protected $fillable = [
         'user_id',
         'board_id',
