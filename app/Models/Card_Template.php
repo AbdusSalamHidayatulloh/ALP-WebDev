@@ -25,7 +25,7 @@ class Card_Template extends Model
                     ->withPivot('value');
     }
 
-    public function fieldTemplate(): HasMany {
+    public function fieldTemplates(): HasMany {
         return $this->hasMany(FieldTemplates::class);
     }
 

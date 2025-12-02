@@ -18,7 +18,7 @@ class Custom_Fields extends Model
 
     //Pivot Cards <-> Custom Fields
     public function Cards(): BelongsToMany {
-        return $this->belongsToMany(Card::class)
+        return $this->belongsToMany(Card::class, 'field_card')
                     ->using(FieldsCards::class)
                     ->withPivot('value');
     }
