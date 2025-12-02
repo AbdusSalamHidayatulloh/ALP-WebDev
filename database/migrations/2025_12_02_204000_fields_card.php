@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('fields_card', function (Blueprint $table) {
+        Schema::create('field_cards', function (Blueprint $table) {
             $table->id();
             $table->foreignId('custom_field_id')->constrained()->onDelete('Cascade');
             $table->foreignId('card_id')->constrained()->onDelete('Cascade');
