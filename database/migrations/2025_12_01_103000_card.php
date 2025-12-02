@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->date('dates')->nullable();
             $table->float('position');
-            $table->foreignId('list_id')->constrained('list_card')->onDelete('Cascade');
+            $table->foreignId('list_id')->constrained('list_cards')->onDelete('Cascade');
             $table->timestamps();
         });
     }
