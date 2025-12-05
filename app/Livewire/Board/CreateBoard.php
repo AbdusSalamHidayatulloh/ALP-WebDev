@@ -4,12 +4,14 @@ namespace App\Livewire\Board;
 
 use App\Models\Board;
 use Livewire\Component;
+use Illuminate\Support\Facades\Auth;
 
 class CreateBoard extends Component
 {
     public $board_name;
 
-    public function create() {
+    public function create()
+    {
         //Validate incoming data
         $this->validate([
             'board_name' => 'required|min:1'
@@ -19,7 +21,7 @@ class CreateBoard extends Component
             'board_name' => $this->board_name
         ]);
 
-        $board->users()->attach(auth()->id, [
+        $board->users()->attach(Auth::id(), [
             'isGuest' => false
         ]);
 

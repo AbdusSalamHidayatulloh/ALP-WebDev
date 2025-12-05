@@ -16,7 +16,7 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
 
     protected $fillable = [
-        'username',
+        'name',
         'email',
         'password',
         'invite_id'
@@ -26,13 +26,16 @@ class User extends Authenticatable
         'password',
     ];
 
-    protected static function boot() {
+    //Invite ID akan dibuat saat user dibuat
+    protected static function booted() {
         parent::boot();
         static::creating(function ($user) {
+            logger('EVENT RUNNING: creating user');
             do {
                 $invite = str_pad(random_int(0, 9999999), 7, '0', STR_PAD_LEFT);
             } while (User::where('invite_id', $invite)->exists());
             $user->invite_id = $invite;
+            logger('INVITE GENERATED: ' . $invite);
         });
     }
 
