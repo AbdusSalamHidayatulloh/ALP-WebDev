@@ -1,7 +1,9 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Models\User;
 
 Route::get('/', function () {
     return view('welcome');
@@ -19,9 +21,18 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/board/create', \App\Livewire\Board\CreateBoard::class);
-    Route::get('/board/{board}', \App\Livewire\Board\ViewBoard::class);
-    Route::delete('/board/{board}', \App\Livewire\Board\DeleteBoard::class);
-    Route::get('/dashboard', \App\Livewire\Board\ListBoard::class);
+    // Route::get('/board/{board}', \App\Livewire\Board\ViewBoard::class);
+    // Route::delete('/board/{board}', \App\Livewire\Board\DeleteBoard::class);
+    // Route::get('/dashboard', \App\Livewire\Board\ListBoard::class);
+});
+
+//! FAST LOGIN FOR CHECKS
+Route::get('/laika', function() {
+    $user = User::where('email', 'laika@example.com')->first();
+
+    Auth::login($user);
+
+    return redirect('/dashboard');
 });
 
 require __DIR__.'/auth.php';
