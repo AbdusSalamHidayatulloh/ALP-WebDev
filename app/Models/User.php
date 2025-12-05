@@ -3,46 +3,62 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Dom\Comment;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
         'name',
         'email',
         'password',
+        'invite_id'
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
     protected $hidden = [
         'password',
-        'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+    //Invite ID akan dibuat saat user dibuat
+    protected static function booted() {
+        parent::boot();
+        static::creating(function ($user) {
+            logger('EVENT RUNNING: creating user');
+            do {
+                $invite = str_pad(random_int(0, 9999999), 7, '0', STR_PAD_LEFT);
+            } while (User::where('invite_id', $invite)->exists());
+            $user->invite_id = $invite;
+            logger('INVITE GENERATED: ' . $invite);
+        });
+    }
+
+    //Pivot User <-> Board
+    public function memberBoards(): HasMany {
+        return $this->hasMany(MemberBoard::class);
+    }
+
+    public function boards(): BelongsToMany {
+        return $this->belongsToMany(Board::class, 'member_board')
+                    ->using(MemberBoard::class)
+                    ->withPivot('role', 'isGuest');
+    }
+
+    public function cards(): HasMany {
+        return $this->hasMany(Card::class);
+    }
+
+    public function comments(): HasMany {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function logs(): HasMany {
+        return $this->hasMany(Log::class);
     }
 }
