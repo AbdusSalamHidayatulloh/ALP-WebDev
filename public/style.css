@@ -24,14 +24,16 @@ body {
 #sidebar {
   width: 260px;
   position: fixed;
-  top: 100px;
+  top: 85px;
   left: 0;
   bottom: 0;
   overflow-y: auto;
+  flex-grow: 0;
 }
 
 #boardContent {
   margin-left: 260px;
   overflow-y: auto;
   height: calc(100vh - 100px);
+  flex-grow: 1;
 }
