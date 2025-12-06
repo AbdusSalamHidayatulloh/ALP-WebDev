@@ -22,6 +22,7 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/board-create', [DashboardController::class, 'directCreate'])->name('board.create');
+    Route::get('/board/{board}', [DashboardController::class, 'accessBoard'])->name('board.access');
 });
 
 //! FAST LOGIN FOR CHECKS
