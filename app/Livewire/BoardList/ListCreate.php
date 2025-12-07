@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\List;
+namespace App\Livewire\BoardList;
 
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -12,7 +12,8 @@ class ListCreate extends Component
     public $board_id;
     public $board;
 
-    public function mount($board) {
+    public function mount($board)
+    {
         $this->board = $board;
         $this->board_id = $board->id;
     }
@@ -39,8 +40,17 @@ class ListCreate extends Component
 
         $this->reset('list_name');
 
-        $this->dispatch('list_created');
+        $this->dispatch('list-created');
+
+        $this->dispatch('hideCreateFormFromParent');
     }
+
+    public function cancelCreate()
+    {
+        // Just tell parent to close the form
+        $this->dispatch('hide-create-form');
+    }
+
     public function render()
     {
         return view('livewire.list.list-create');

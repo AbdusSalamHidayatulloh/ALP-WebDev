@@ -1,17 +1,28 @@
 <?php
 
-namespace App\Livewire\List;
+namespace App\Livewire\BoardList;
 
-use App\Models\ListCard;
+use App\Models\Board;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class ListDelete extends Component
 {
-    public function deleteList($listId)
+
+    public $listId;
+    public $boardId;
+    public $board;
+
+    public function mount($boardId, $listId) {
+        $this->boardId = $boardId;
+        $this->listId = $listId;
+        $this->board = Board::findOrFail($boardId);
+    } 
+
+    public function deleteList()
     {
 
-        $list = $this->board->lists()->where('id', $listId)->firstOrFail();
+        $list = $this->board->lists()->where('id', $this->listId)->firstOrFail();
 
         $pivot = $this->board->members()->where('user_id', Auth::user()->id)->first()?->pivot;
 
@@ -21,7 +32,7 @@ class ListDelete extends Component
 
         $list->delete();
 
-        $this->dispatch('list_deleted');
+        $this->dispatch('list-deleted');
     }
 
     public function render()
