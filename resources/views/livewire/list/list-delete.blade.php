@@ -1,3 +1,3 @@
-<div>
-    {{-- Nothing in the world is as soft and yielding as water. --}}
-</div>
+<button wire:click="deleteList">
+    <span class="material-symbols-rounded font-logo">delete</span>
+</button>
