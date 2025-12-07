@@ -34,8 +34,6 @@ class CreateBoard extends Component
     //In livewire library, render is used to render the data
     public function render()
     {
-        return view('livewire.board.create-board', [
-            'boards' => Auth::user()->boards
-        ]);
+        return view('livewire.board.create-board');
     }
 }

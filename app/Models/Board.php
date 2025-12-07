@@ -25,6 +25,11 @@ class Board extends Model
             ->withTimestamps();
     }
 
+    public function lists()
+    {
+        return $this->hasMany(ListCard::class);
+    }
+
     public function labels(): HasMany
     {
         return $this->hasMany(Label::class);
