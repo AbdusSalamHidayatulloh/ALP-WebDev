@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Board;
 
+use App\Events\BroadBroadcast;
 use App\Models\Board;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
@@ -27,6 +28,8 @@ class CreateBoard extends Component
         ]);
 
         $this->reset('board_name');
+
+        broadcast(new BroadBroadcast('created'));
 
         $this->redirect('/dashboard');
     }

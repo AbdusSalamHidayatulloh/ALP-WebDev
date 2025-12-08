@@ -16,12 +16,17 @@ class CardCreate extends Component
     public $list_id;
 
     public function mount($list) {
+        if (!$list) return;
         $this->list = $list;
         $this->list_id = $list->id;
         $this->board = $list->board()->with('members')->first();;
     }
 
     public function createCard(){
+    if (!$this->board) {
+        abort(403, 'Board not found');
+    }
+
         $pivot = $this->board->members()->where('user_id', Auth::id())->first()?->pivot;
 
         if (! $pivot) {
@@ -49,7 +54,7 @@ class CardCreate extends Component
     }
 
     public function render()
-    {
+    {        
         return view('livewire.card.card-create');
     }
 }

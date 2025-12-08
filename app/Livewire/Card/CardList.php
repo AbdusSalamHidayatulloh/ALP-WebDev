@@ -9,36 +9,46 @@ use Livewire\Component;
 
 class CardList extends Component
 {
-    
+
     public $list;
     public $listId;
     public $showCreateCardForm = false;
     public $cards = [];
 
     protected $listeners = [
-        'card-delete' => 'refreshCards',
-        'card-created' => 'refreshCards',
-        'hideCreateFormCard' => 'createCancel'
+        "echo-private:card.{$this->boardId},CardBroadcast" => 'refreshCards',
+        'hideCreateFormCard' => 'createCancel',
     ];
 
-    public function showForm() {
+    public function showForm()
+    {
         $this->showCreateCardForm = true;
     }
 
-    public function createCancel() {
+    public function createCancel()
+    {
         $this->showCreateCardForm = false;
     }
 
-    public function mount(ListCard $list) {
+    public function mount(ListCard $list)
+    {
+        if (!$list) return;
         $this->listId = $list->id;
         $this->list = ListCard::find($this->listId);
         $this->refreshCards();
     }
 
-    public function refreshCards() {
+    public function refreshCards()
+    {
         $this->list = ListCard::with('cards')->find($this->listId);
+        logger('Found list: ' . ($this->list ? $this->list->id : 'NULL'));
 
-        if ($this->list && $this->list->board->members->pluck('id')->doesntContain(Auth::id())) {
+        if (!$this->list) {
+            $this->cards = [];
+            return;
+        }
+
+        if ($this->list->board->members->pluck('id')->doesntContain(Auth::id())) {
             abort(403, 'Unauthorized access, you are not part of the board');
         }
 
@@ -47,7 +57,6 @@ class CardList extends Component
 
     public function render()
     {
-        logger('render cards at ' . now());
         return view('livewire.card.card-list');
     }
 }

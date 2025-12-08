@@ -2,6 +2,7 @@
 
 namespace App\Livewire\BoardList;
 
+use App\Events\ListBroadcast;
 use App\Models\Board;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -13,24 +14,30 @@ class ListDelete extends Component
     public $boardId;
     public $board;
 
-    public function mount($boardId, $listId) {
+    public function mount($boardId, $listId)
+    {
         $this->boardId = $boardId;
         $this->listId = $listId;
         $this->board = Board::findOrFail($boardId);
-    } 
+    }
 
     public function deleteList()
     {
-
         $list = $this->board->lists()->where('id', $this->listId)->firstOrFail();
 
         $pivot = $this->board->members()->where('user_id', Auth::user()->id)->first()?->pivot;
 
-        if(! $pivot) {
+        if (! $pivot) {
             abort(403, 'Unauthorized access, you are not part of the board');
         }
 
+        $listId = $list->id;
+
+        $broadId = $this->board->id;
+
         $list->delete();
+
+        broadcast(New ListBroadcast($broadId, 'deleted', $listId))->toOthers();
 
         $this->dispatch('list-deleted');
     }
