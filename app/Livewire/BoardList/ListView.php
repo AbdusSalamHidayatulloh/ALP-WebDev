@@ -16,8 +16,9 @@ class ListView extends Component
     //Listeners structure:
     // 'dispatch_sent' -> 'refreshfunction'
     protected $listeners = [
-        'echo-private:list.{$this->boardId},ListBroadcast' => 'refreshLists',
+        'list-created' => 'refreshLists',
         'hideCreateFormFromParent' => 'createCancel',
+        'list-deleted' => 'refreshLists'
     ];
 
     
@@ -52,6 +53,7 @@ class ListView extends Component
 
     public function render()
     {
+        logger('render fired at ' . now());
         return view('livewire.list.list-view');
     }
 }

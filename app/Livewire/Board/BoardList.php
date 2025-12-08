@@ -13,7 +13,7 @@ class BoardList extends Component
     public $boards;
 
     protected $listeners = [
-        'echo-private:list.{$this->boardId},ListBroadcast' => 'refreshLists',
+        'board_deleted' => 'refreshBoards'
     ];
 
     public function mount()
@@ -29,11 +29,11 @@ class BoardList extends Component
             $this->boards = $user->memberBoards()->get();
 
             $this->myWorkspaces = $this->boards->filter(
-                fn($board) => $board->pivot->isGuest == false
+                fn ($board) => $board->pivot->isGuest == false
             );
 
             $this->otherWorkspaces = $this->boards->filter(
-                fn($board) => $board->pivot->isGuest === true
+                fn ($board) => $board->pivot->isGuest === true
             );
         } else {
             $this->myWorkspaces = collect([]);
