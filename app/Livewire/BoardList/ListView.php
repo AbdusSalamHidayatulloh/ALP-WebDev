@@ -18,7 +18,8 @@ class ListView extends Component
     protected $listeners = [
         'list-created' => 'refreshLists',
         'hideCreateFormFromParent' => 'createCancel',
-        'list-deleted' => 'refreshLists'
+        'list-deleted' => 'refreshLists',
+        'list-renamed' => 'refreshLists'
     ];
 
     

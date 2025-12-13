@@ -28,7 +28,6 @@
             <div class="card p-4 pt-5 bg-card-color shadow rounded justify-content-between d-flex flex-row align-items-start">
                 <a class="text-decoration-none">{{ $board->board_name }}</a>
 
-                {{-- FIX #1: Replace WRONG call delete($id) --}}
                 <livewire:board.board-delete
                     :board-id="$board->id"
                     :key="'o-'.$board->id" />

@@ -19,6 +19,7 @@
 
         {{-- Board --}}
         <main id="boardContent" class="p-4">
+            <livewire:board.board-rename :board="$board" :key="'board-renamed-' . $board->id . '-' . $board->updated_at" />
             @push('scripts')
             <script>
                 window.boardId = {{ $board->id }};

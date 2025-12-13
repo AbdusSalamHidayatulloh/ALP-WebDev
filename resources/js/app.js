@@ -18,6 +18,14 @@ window.Echo.channel("boards").listen("BoardDeleted", (e) => {
     Livewire.dispatch("board_deleted", { id: e.boardId });
 });
 
+//GLOBAL EVENTS
+//Muncul jika misalnya dikaitkan di halaman lain
+//Misal board di /dashboard & /board/{id}
+window.Echo.channel(`boards`).listen(".BoardRenamed", (e) => {
+    console.log("Name from a board has been changed:", e);
+    Livewire.dispatch("global-board-renamed", { board: e.board });
+})
+
 //Ngak usah sentuh yang listener -> if(!window.boardId), hanya untuk tes di console web mu
 document.addEventListener("DOMContentLoaded", () => {
     console.log("boardId:", window.boardId);
@@ -48,6 +56,17 @@ document.addEventListener("DOMContentLoaded", () => {
         Livewire.dispatch("list-deleted", { listId: e.listId });
     });
 
+    //NON GLOBAL EVENTS
+    //hanya diwindow sedang terbuka, tidak bisa keluar
+    window.Echo.private(`board.${window.boardId}`).listen(".BoardRenamed", (e) => {
+        console.log("Name has been changed for board:", e);
+        Livewire.dispatch("board-renamed", { board: e.board });
+    });
+
+    window.Echo.private(`board.${window.boardId}`).listen(".ListRenamed", (e) => {
+        console.log("Name change on a list has been detected:", e);
+        Livewire.dispatch("list-renamed", { list: e.list });
+    });
     //Ini jika kau mau munculin dengan non private (Channel)
 });
 

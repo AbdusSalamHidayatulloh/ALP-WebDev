@@ -4,7 +4,10 @@
             <div class="col-auto list-view">
                 <div class="card shadow-sm p-2" style="width: 300px">
                     <div class="card-header bg-white fw-bold mb-3">
-                        {{ $li->list_name }}
+                        <livewire:boardlist.list-rename 
+                            :board="$board" 
+                            :list="$li" 
+                            :key="'list-rename-' . $li->id . '-' . $li->updated_at" />
                         <livewire:boardlist.list-delete
                             :board-id="$this->board->id"
                             :list-id="$li->id"

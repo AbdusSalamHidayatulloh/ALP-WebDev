@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Board;
 
+use App\Models\Board;
 use Livewire\Component;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -12,6 +13,8 @@ class BoardList extends Component
     public $myWorkspaces;
     public $otherWorkspaces;
     public $boards;
+    public $board;
+    public $boardId;
 
     public function mount()
     {
@@ -19,7 +22,8 @@ class BoardList extends Component
     }
 
     #[On('board_deleted')]
-    public function refreshBoards() {
+    public function refreshBoards()
+    {
         logger("Livewire refreshed boards after Echo event.");
         $this->loadBoards();
     }
@@ -32,17 +36,23 @@ class BoardList extends Component
             $this->boards = $user->memberBoards()->get();
 
             $this->myWorkspaces = $this->boards->filter(
-                fn ($board) => $board->pivot->isGuest == false
+                fn($board) => $board->pivot->isGuest == false
             );
 
             $this->otherWorkspaces = $this->boards->filter(
-                fn ($board) => $board->pivot->isGuest === true
+                fn($board) => $board->pivot->isGuest === true
             );
         } else {
             $this->myWorkspaces = collect([]);
             $this->otherWorkspaces = collect([]);
         }
     }
+
+    #[On('global-board-renamed')]
+    public function handleGlobalBoardRename() {
+        $this->loadBoards();
+    }
+
 
     public function render()
     {
