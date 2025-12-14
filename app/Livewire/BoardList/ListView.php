@@ -45,16 +45,11 @@ class ListView extends Component
     }
 
     public function refreshLists() {
-        logger('refreshList:', ['boardId' => $this->boardId]);
-
         $this->board = Board::with('lists')->find($this->boardId);
-
         $pivot = $this->board->members()->where('user_id', Auth::id())->first()?->pivot;
-
         if (! $pivot) {
             abort(403, 'Unauthorized access, you are not part of the board');
         }
-
         $this->lists = $this->board->lists()->orderBy('position')->get();
     }
 

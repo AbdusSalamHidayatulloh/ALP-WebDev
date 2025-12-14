@@ -63,7 +63,6 @@ class CardList extends Component
 
     public function render()
     {
-        logger('render cards at ' . now());
         return view('livewire.card.card-list');
     }
 }

@@ -22,11 +22,7 @@ class CardCreated implements ShouldBroadcast
     public function __construct(Card $card)
     {
         //Kenapa array? lihat di view, numpuk kayak array
-        $card->load('list');
-
-        logger("LIST RELATION = " . json_encode($card->list));
-        logger("BOARD ID = " . $card->list->board_id ?? 'null');
-        
+        $card->load('list');        
         $this->card = $card->toArray();
         $this->boardId = $card->list->board_id;
     }
