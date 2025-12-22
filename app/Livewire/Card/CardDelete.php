@@ -17,7 +17,7 @@ class CardDelete extends Component
     public $board;
     public $cardId;
 
-    public function mount($boardId, $listId, $cardId) {
+    public function mount($boardId, $listId) {
         $this->boardId = $boardId;
         $this->board = Board::findOrFail($boardId);
         $this->listId = $listId;

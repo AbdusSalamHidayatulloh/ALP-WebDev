@@ -1,5 +1,3 @@
-import "@popperjs/core";
-import "bootstrap";
 import "../css/app.css";
 import "./bootstrap";
 
@@ -68,6 +66,14 @@ function subscribedToBoard(boardId) {
 
     .listen(".ListReordered", (e) => {
         Livewire.dispatch("list-refreshed")
+    })
+
+    .listen(".LabelSetting", (e) => {
+        Livewire.dispatch("label-setting", { boardId: e.boardId });
+    })
+
+    .listen(".LabelDeleted", (e) => {
+        Livewire.dispatch("label-deleted", { boardId: e.boardId });
     })
     //Ini jika kau mau munculin dengan non private (Channel)
 }

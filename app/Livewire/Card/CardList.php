@@ -10,7 +10,7 @@ use Livewire\Component;
 
 class CardList extends Component
 {
-    
+
     public $list;
     public $listId;
     public $showCreateCardForm = false;
@@ -23,21 +23,34 @@ class CardList extends Component
     public $editingTitle = false;
     public $editingDescription = false;
 
+    public string $labelView = 'list';
+    public ?int $activeLabelId = null;
+
+
     protected $listeners = [
         'card-deleted' => 'refreshCards',
         'card-created' => 'refreshCards',
         'hideCreateFormCard' => 'createCancel',
         'cards-reordered' => 'reorderCards',
         'card-refreshed' => 'refreshCards',
+
+        //Labels
+        'create-label'  => 'openCreateLabel',
+        'edit-label'    => 'openEditLabel',
+        'label-saved'   => 'backToLabelList',
+        'label-deleted' => 'backToLabelList',
+        'cancel-label'  => 'backToLabelList',
     ];
 
-    public function mount(ListCard $list) {
+    public function mount(ListCard $list)
+    {
         $this->listId = $list->id;
         $this->list = ListCard::find($this->listId);
         $this->refreshCards();
     }
 
-    public function refreshCards() {
+    public function refreshCards()
+    {
         $this->list = ListCard::with('cards')->find($this->listId);
 
         if ($this->list && $this->list->board->members->pluck('id')->doesntContain(Auth::id())) {
@@ -47,8 +60,9 @@ class CardList extends Component
         $this->cards = $this->list->cards()->orderBy('position')->get();
     }
 
-    public function reorderCards(int $cardId, int $fromListId, int $toListId, array $orderedIds) {
-        foreach($orderedIds as $index => $id) {
+    public function reorderCards(int $cardId, int $fromListId, int $toListId, array $orderedIds)
+    {
+        foreach ($orderedIds as $index => $id) {
             Card::where('id', $id)->update([
                 'list_id' => $toListId,
                 'position' => $index + 1
@@ -60,15 +74,18 @@ class CardList extends Component
         $this->refreshCards();
     }
 
-    public function showForm() {
+    public function showForm()
+    {
         $this->showCreateCardForm = true;
     }
 
-    public function createCancel() {
+    public function createCancel()
+    {
         $this->showCreateCardForm = false;
     }
 
-    public function openCard($cardId) {
+    public function openCard($cardId)
+    {
         $this->selectedCard = Card::find($cardId);
         $this->showCardModal = true;
         $this->editMode = false;
@@ -76,21 +93,23 @@ class CardList extends Component
         $this->cardDescription = $this->selectedCard->description;
     }
 
-    public function closeCard() {
+    public function closeCard()
+    {
         $this->showCardModal = false;
         $this->selectedCard = null;
         $this->editMode = false;
         $this->dispatch('reset-fields');
     }
 
-    public function deleteCard($cardId = null) {
-    if ($cardId) {
-        Card::find($cardId)->delete();
-    } else {
-        $this->selectedCard->delete();
-        $this->closeCard();
-    }
-    $this->refreshCards();
+    public function deleteCard($cardId = null)
+    {
+        if ($cardId) {
+            Card::find($cardId)->delete();
+        } else {
+            $this->selectedCard->delete();
+            $this->closeCard();
+        }
+        $this->refreshCards();
     }
 
     public function toggleEditTitle()
@@ -111,6 +130,22 @@ class CardList extends Component
             ]);
         }
         $this->editingDescription = !$this->editingDescription;
+    }
+
+
+    public function openCreateLabel() {
+        $this->activeLabelId = null;
+        $this->labelView = 'form';
+    }
+
+    public function openEditLabel($labelId) {
+        $this->activeLabelId = $labelId;
+        $this->labelView = 'form';
+    }
+
+    public function backToLabelList() {
+        $this->activeLabelId = null;
+        $this->labelView = 'list';
     }
 
     public function render()

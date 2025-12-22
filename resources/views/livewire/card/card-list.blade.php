@@ -9,25 +9,17 @@
         >
             <div class="card-body p-2 d-flex justify-content-between align-items-center">
                 <span wire:click="openCard({{ $ca->id }})">{{ $ca->card_title }}</span>
-                <button 
-                    class="btn btn-sm btn-danger" 
-                    wire:click.stop="deleteCard({{ $ca->id }})"
-                    style="padding: 2px 6px; font-size: 12px;"
-                >
-                    ✕
-                </button>
             </div>
         </div>
     @endforeach
-
-        <div wire:ignore.self>
+    </div>
+    <div wire:ignore.self>
         @if (! $showCreateCardForm)
             <button class="btn add-card btn-sm btn-outline-primary w-100 mt-2 no-sort" wire:click="showForm">Add Card</button>
         @else
             <livewire:card.card-create :list="$list" :key="'card-create-' . $list->id" />
         @endif
         </div>
-    </div>
 
     @if($showCardModal && $selectedCard)
         <div class="modal d-block" style="background-color: rgba(0,0,0,0.5); position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 99999;">
@@ -83,6 +75,9 @@
                                 </div>
                             @endif
                         </div>
+
+                        <hr>
+                        <button class="btn btn-sm btn-outline-secondary" wire:click="$set('showLabels', false)">Labels</button>
 
                         <hr>
                         <livewire:custom-field.custom-field-view :card="$selectedCard" :key="'custom-field-' . $selectedCard->id . '-' . now()->timestamp" />

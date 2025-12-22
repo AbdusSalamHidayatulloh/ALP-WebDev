@@ -3,7 +3,7 @@
             @foreach($lists as $li)
             <div class="col-auto list-view d-flex flex-column h-100 flex-shrink-0" data-list-id={{ $li->id }} wire:key="list-{{ $li->id }}">
                 <div class="card shadow-sm p-2" style="width: 300px">
-                    <div class="card-header bg-white fw-bold mb-3">
+                    <div class="card-header d-flex justify-content-between bg-white fw-bold mb-3">
                         <livewire:boardlist.list-rename 
                             :board="$board" 
                             :list="$li" 

@@ -1,5 +1,6 @@
 <div>
     @if ($editList)
+    <div class="input-group d-flex gap-2">
         <input
             type="text"
             wire:model.defer="list_name"
@@ -8,6 +9,11 @@
             class="form-control"
             autofocus
         >
+        <button
+            class="btn btn-secondary"
+            wire:click="$set('editList', false)"
+        >✕</button>
+    </div>
     @else
         <h2 wire:click="$set('editList', true)">
             {{ $list_name }}

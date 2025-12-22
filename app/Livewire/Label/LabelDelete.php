@@ -14,6 +14,9 @@ class LabelDelete extends Component
     }
 
     public function deleteLabel() {
+        if(! $this->label) {
+            abort(404, 'Label not found');
+        }
         $this->label->delete();
         $this->dispatch('label-deleted');
     }

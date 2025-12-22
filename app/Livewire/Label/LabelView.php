@@ -11,8 +11,8 @@ class LabelView extends Component
     public $board;
     public $labels = [];
     protected $listeners = [
-        'label-created' => 'refreshLabel',
-        'label-deleted' => 'refreshLabel'
+        'label-saved' => 'loadLabels',
+        'label-deleted' => 'loadLabels'
     ];
 
     public function mount($board) {
@@ -21,7 +21,7 @@ class LabelView extends Component
     }
 
     public function loadLabels() {
-        $this->labels = Label::where('board_id', $this->board->id)->get();
+        $this->labels = $this->board->labels()->get();
     }
 
     public function render()
