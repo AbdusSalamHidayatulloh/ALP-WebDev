@@ -10,7 +10,8 @@
             autofocus
         >
         <button
-            class="btn btn-secondary"
+            class="btn text-muted position-absolute top-50 end-0 translate-middle-y me-2 p-0 border-0 bg-transparent"
+            style="z-index: 999"
             wire:click="$set('editList', false)"
         >✕</button>
     </div>
