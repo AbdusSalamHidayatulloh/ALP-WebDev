@@ -78,7 +78,13 @@ function subscribedToBoard(boardId) {
     .listen(".LabelDeleted", (e) => {
         Livewire.dispatch("label-deleted", { boardId: e.boardId });
     })
-    //Ini jika kau mau munculin dengan non private (Channel)
+
+    .listen(".BoardInvited", (e) => {
+        Livewire.dispatch("member_added", { board: e.board });
+    })
+
+    //Untuk remove & update member
+    
 }
 
 //! KRITERIA KEMUNCULAN
