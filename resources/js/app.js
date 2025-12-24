@@ -83,17 +83,9 @@ function subscribedToBoard(boardId) {
         Livewire.dispatch("member_added", { board: e.board });
     })
 
-    //Untuk remove & update member
-    
+    .listen(".BoardMemberActions", (e) => {
+        console.log('member action event received & exited to previous menu', e);
+        Livewire.dispatch("member_action", { member: e.member })
+        Livewire.dispatch('member_action_done');
+    })
 }
-
-//! KRITERIA KEMUNCULAN
-//* ke tinker terus tulis
-//* event(new \App\Events\Arah\Broadcast(param))
-//* Jika muncul = [] AMAN (TES 1)
-
-//* cek browser mu, inspect element dan buka console
-//* pasangin console.log() SEBELUM livewire.lister
-//* panggil lagi pake tinker kayak yang awal
-//* JIKA di console muncul & dan di tinker muncul = [] AMAN (TES 2)
-//* berarti kamu udah aman, cek duplicatenya pake duplicate window
