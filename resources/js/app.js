@@ -19,14 +19,14 @@ window.Echo.channel("boards")
     })
     .listen(".BoardInvited", (e) => {
         Livewire.dispatch("member_added", { board: e.board });
-    })
+    });
 
 //WRAP DRAGGABLE
 //Ini lebih ke untuk ngasih tahu kalau ini pake
 //livewire:navigated
 document.addEventListener("livewire:navigated", () => {
-    if (!window.boardId) return
-    subscribedToBoard(window.boardId)
+    if (!window.boardId) return;
+    subscribedToBoard(window.boardId);
     initListSortable(window.boardId);
     initCardSortable(window.boardId);
 });
@@ -34,58 +34,80 @@ document.addEventListener("livewire:navigated", () => {
 const subscribedBoard = new Set();
 //Ngak usah sentuh yang listener -> if(!window.boardId), hanya untuk tes di console web mu
 function subscribedToBoard(boardId) {
-    if(subscribedBoard.has(boardId)) return;
+    if (subscribedBoard.has(boardId)) return;
     subscribedBoard.add(boardId);
     // Nanti bakal dibawa kesini hasilnya, terus check web mu habis ini
-    window.Echo.private(`board.${window.boardId}`).listen(".CardCreated", (e) => {
-        Livewire.dispatch("card-created", { card: e.card });
-    })
+    window.Echo.private(`board.${window.boardId}`)
+        .listen(".CardCreated", (e) => {
+            Livewire.dispatch("card-created", { card: e.card });
+        })
 
-    .listen(".CardDeleted", (e) => {
-        Livewire.dispatch("card-deleted", { id: e.cardId });
-    })
+        .listen(".CardDeleted", (e) => {
+            Livewire.dispatch("card-deleted", { id: e.cardId });
+        })
 
-    .listen(".ListCreated", (e) => {
-        Livewire.dispatch("list-created", { list: e.list });
-    })
+        .listen(".ListCreated", (e) => {
+            Livewire.dispatch("list-created", { list: e.list });
+        })
 
-    .listen(".ListDeleted", (e) => {
-        Livewire.dispatch("list-deleted", { listId: e.listId });
-    })
+        .listen(".ListDeleted", (e) => {
+            Livewire.dispatch("list-deleted", { listId: e.listId });
+        })
 
-    //NON GLOBAL EVENTS
-    //hanya diwindow sedang terbuka, tidak bisa keluar
-    .listen(".BoardRenamed", (e) => {
-        Livewire.dispatch("board-renamed", { board: e.board });
-    })
+        //NON GLOBAL EVENTS
+        //hanya diwindow sedang terbuka, tidak bisa keluar
+        .listen(".BoardRenamed", (e) => {
+            Livewire.dispatch("board-renamed", { board: e.board });
+        })
 
-    .listen(".ListRenamed", (e) => {
-        Livewire.dispatch("list-renamed", { list: e.list });
-    })
+        .listen(".ListRenamed", (e) => {
+            Livewire.dispatch("list-renamed", { list: e.list });
+        })
 
-    .listen(".CardReordered", (e) => {
-        Livewire.dispatch("card-refreshed" , { listId: e.toListId })
-    })
+        .listen(".CardReordered", (e) => {
+            Livewire.dispatch("card-refreshed", { listId: e.toListId });
+        })
 
-    .listen(".ListReordered", (e) => {
-        Livewire.dispatch("list-refreshed")
-    })
+        .listen(".ListReordered", (e) => {
+            Livewire.dispatch("list-refreshed");
+        })
 
-    .listen(".LabelSetting", (e) => {
-        Livewire.dispatch("label-setting", { boardId: e.boardId });
-    })
+        .listen(".LabelSetting", (e) => {
+            Livewire.dispatch("label-setting", { boardId: e.boardId });
+        })
 
-    .listen(".LabelDeleted", (e) => {
-        Livewire.dispatch("label-deleted", { boardId: e.boardId });
-    })
+        .listen(".LabelDeleted", (e) => {
+            Livewire.dispatch("label-deleted", { boardId: e.boardId });
+        })
 
-    .listen(".BoardInvited", (e) => {
-        Livewire.dispatch("member_added", { board: e.board });
-    })
+        .listen(".BoardInvited", (e) => {
+            Livewire.dispatch("member_added", { board: e.board });
+        })
 
-    .listen(".BoardMemberActions", (e) => {
-        console.log('member action event received & exited to previous menu', e);
-        Livewire.dispatch("member_action", { member: e.member })
-        Livewire.dispatch('member_action_done');
-    })
+        .listen(".BoardMemberActions", (e) => {
+            console.log(
+                "member action event received & exited to previous menu",
+                e
+            );
+            Livewire.dispatch("member_action", { member: e.member });
+            Livewire.dispatch("member_action_done");
+        });
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    const btn = document.getElementById("toggleSidebar");
+    const key = 'sidebar-collapsed';
+
+    if(localStorage.getItem(key) === '1') {
+        document.body.classList.add('sidebar-collapsed');
+        console.log(`Sidebar collapsed or no? ${localStorage.getItem(key)}`);
+    }
+
+    btn.addEventListener("click", () => {
+        console.log("Click!");
+        document.body.classList.toggle("sidebar-collapsed");
+        localStorage.setItem(
+            key, document.body.classList.contains("sidebar-collapsed") ? '1' : '0'
+        );
+    });
+});

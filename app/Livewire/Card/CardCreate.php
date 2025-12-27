@@ -41,17 +41,15 @@ class CardCreate extends Component
         ]);
 
         $this->reset('card_title');
-        $this->dispatch('card-created');
-        $this->cancelCreateCard();
-
-        //Kita manggil broadcastnya dengan cara begini
+            //Kita manggil broadcastnya dengan cara begini
         //Ambil data yang habis dibuat terus bawa ke param CardCreated broadcast
         //Habis ini ke app.js
         broadcast(new CardCreated($card));
+        $this->cancelCreateCard();
     }
 
     public function cancelCreateCard() {
-        $this->dispatch('hideCreateFormCard')->to(CardList::class);;
+        $this->dispatch('hideCreateFormCard');
     }
 
     public function render()

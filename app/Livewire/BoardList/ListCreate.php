@@ -50,7 +50,7 @@ class ListCreate extends Component
 
     public function cancelCreateList()
     {
-        $this->dispatch('hideCreateFormFromParent')->to(ListView::class);
+        $this->dispatch('hideCreateFormFromParent');
     }
 
     public function render()

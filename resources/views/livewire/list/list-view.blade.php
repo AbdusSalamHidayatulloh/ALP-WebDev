@@ -1,4 +1,4 @@
-    <div class="container-fluid board-scroll mt-3">
+    <div class="container-fluid board-scroll mt-3 py-3" style="min-height: calc(73vh - 120px); background-color: #5778FD; border-end-start-radius: 8px; border-end-end-radius: 8px;">
         <div class="d-flex gap-3 flex-nowrap" id="list-sortable">
             @foreach($lists as $li)
             <div class="col-auto list-view d-flex flex-column h-100 flex-shrink-0" data-list-id={{ $li->id }} wire:key="list-{{ $li->id }}">

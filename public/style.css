@@ -30,6 +30,8 @@ body {
   bottom: 0;
   overflow-y: auto;
   flex-grow: 0;
+  transform: translateX(0);
+  transition: transform 0.3s ease;
 }
 
 #boardContent {
@@ -37,6 +39,15 @@ body {
   overflow-y: auto;
   height: calc(100vh - 100px);
   flex-grow: 1;
+  transition: all 0.3s ease;
+}
+
+body.sidebar-collapsed #sidebar {
+  transform: translateX(-260px);
+}
+
+body.sidebar-collapsed #boardContent {
+  margin-left: 0 !important;
 }
 
 .list-view {

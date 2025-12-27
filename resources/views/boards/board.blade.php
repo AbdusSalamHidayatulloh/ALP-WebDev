@@ -25,13 +25,20 @@
             <livewire:board.board-invite :board="$board" />
             <livewire:board.board-member-list :board="$board" />
             @push('scripts')
-            <script>
-                window.boardId = {{ $board->id }};
-            </script>
+                <script>
+                    window.boardId = {{ $board->id }};
+                </script>
             @endpush
             <livewire:boardlist.list-view :board="$board" />
-            
+
         </main>
+
+        <div class="position-absolute d-flex flex-row p-2 bg-white p-1 shadow" style="bottom: 40px; left: 50%; border-radius: 10px;">
+            <button id="toggleSidebar" class="btn btn-primary mb-3">
+                ☰
+            </button>
+        </div>
+
     </div>
 
 @endsection
