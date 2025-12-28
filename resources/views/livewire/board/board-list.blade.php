@@ -16,7 +16,6 @@
            class="card p-4 bg-white shadow rounded flex items-center justify-center cursor-pointer hover:bg-gray-100 transition no-underline">
             <h4 class="fw-bold text-center">Make a Board</h4>
         </a>
-
     </div>
 
     <br>

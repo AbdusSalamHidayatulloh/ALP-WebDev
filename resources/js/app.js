@@ -100,11 +100,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if(localStorage.getItem(key) === '1') {
         document.body.classList.add('sidebar-collapsed');
-        console.log(`Sidebar collapsed or no? ${localStorage.getItem(key)}`);
     }
 
     btn.addEventListener("click", () => {
-        console.log("Click!");
         document.body.classList.toggle("sidebar-collapsed");
         localStorage.setItem(
             key, document.body.classList.contains("sidebar-collapsed") ? '1' : '0'
