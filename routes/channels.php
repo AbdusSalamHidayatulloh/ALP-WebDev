@@ -14,3 +14,7 @@ Broadcast::channel('board.{boardId}', function ($user, $boardId) {
 Broadcast::channel('list.{listId}', function($user, $listId) {
     return ListCard::where('id', $listId)->whereHas('board.members', fn ($q) => $q->where('users.id', $user->id));
 });
+
+Broadcast::channel('user.{userId}', function($user, $userId) {
+    return (int) $user->id === (int) $userId;
+});

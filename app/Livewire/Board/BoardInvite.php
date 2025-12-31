@@ -3,9 +3,12 @@
 namespace App\Livewire\Board;
 
 use App\Events\Board\BoardInvited;
+use App\Events\Board\BoardMemberToast;
 use App\Models\Board;
 use App\Models\User;
+use App\Support\ToastMessage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -66,9 +69,21 @@ class BoardInvite extends Component
             'isGuest' => true,
         ]);
 
+        $toast = [
+                'type' => 'board_added',
+                'board_id' => $this->board->id,
+                'board_name' => $this->board->board_name,
+                'actor_id' => Auth::id(),
+                'actor_name' => Auth::user()->name,
+                'created_at' => now()->toISOString()
+        ];
+
         $this->reset('inviteId');
 
+        $toast['message'] = ToastMessage::resolve($toast);
+
         event(new BoardInvited($this->board));
+        event(new BoardMemberToast($user->id, $toast));
         
         $this->dispatch('member_added');
     }

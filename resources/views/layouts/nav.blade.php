@@ -5,6 +5,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @auth
+        <meta name="user-id" content="{{ auth()->id() }}">
+    @endauth
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,10 +24,10 @@
 
 <body class="d-flex flex-column min-vh-100">
     @include('components.header')
-
     <main class="z-0 bg-color-main-one">
         @yield('mainContent')
     </main>
+    <x-toast />
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
     @livewireScripts

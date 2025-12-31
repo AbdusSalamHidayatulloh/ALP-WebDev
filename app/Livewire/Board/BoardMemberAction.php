@@ -3,8 +3,12 @@
 namespace App\Livewire\Board;
 
 use App\Events\Board\BoardMemberActions;
+use App\Events\Board\BoardMemberToast;
 use App\Models\Board;
+use App\Support\ToastMessage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -72,7 +76,32 @@ class BoardMemberAction extends Component
             ['role' => $this->role]
         );
 
+        Log::info('BoardMemberAction: setting toast for role change', [
+            'cache_key' => 'toast:user:' . $this->member->id,
+            'member_id' => $this->member->id,
+            'board_id'  => $this->board->id,
+            'role'      => $this->role,
+            'actor_id'  => Auth::id(),
+        ]);
+
+        $toast = [
+                'type' => 'role_changed',
+                'board_id' => $this->board->id,
+                'board_name' => $this->board->board_name,
+                'role' => $this->role,
+                'actor_id' => Auth::id(),
+                'actor_name' => Auth::user()->name,
+                'created_at' => now()->toISOString()
+        ];
+
+        Log::info('BoardMemberAction: toast cached', [
+            'cache_contents' => Cache::get('toast:user:' . $this->member->id)
+        ]);
+
+        $toast['message'] = ToastMessage::resolve($toast);
+
         broadcast(new BoardMemberActions($this->board, $this->member));
+        broadcast(new BoardMemberToast($this->member->id, $toast));
 
         $this->member = null;
     }
@@ -91,7 +120,19 @@ class BoardMemberAction extends Component
 
         $this->board->members()->detach($userId);
 
+        $toast = [
+                'type' => 'board_removed',
+                'board_id' => $this->board->id,
+                'board_name' => $this->board->board_name,
+                'actor_id' => Auth::id(),
+                'actor_name' => Auth::user()->name,
+                'created_at' => now()->toISOString()
+        ];
+
+        $toast['message'] = ToastMessage::resolve($toast);
+
         broadcast(new BoardMemberActions($this->board, $this->member));
+        broadcast(new BoardMemberToast($userId, $toast));
     }
 
     #[On('member_action_done')]

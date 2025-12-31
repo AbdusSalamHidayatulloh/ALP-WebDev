@@ -11,9 +11,9 @@ class DashboardController extends Controller
         return view('boards.board-create');
     }
 
-    public function accessBoard(Board $board) {
+    public function accessBoard(?Board $board) {
         if(! $board->members()->where('user_id', Auth::user()->id)->exists()) {
-            abort(403, 'Unauthorize entry');
+            abort(403, 'You are not part of this board');
         }
         return view('boards.board', [
             'board' => $board

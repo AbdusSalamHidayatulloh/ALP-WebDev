@@ -1,19 +1,20 @@
+console.log("🔥 app.js loaded");
+
 import "../css/app.css";
 import "./bootstrap";
 import { initListSortable } from "./board-sortable";
 import { initCardSortable } from "./card-sortable";
 import { initInboxSortable } from "./inbox-sortable";
 
-
 function bootSortables(boardId) {
     initInboxSortable();
     initCardSortable(boardId);
-    initListSortable(boardId)
+    initListSortable(boardId);
 }
 
 Livewire.hook("message.processed", () => {
     bootSortables(window.boardId);
-})
+});
 
 //This is where you executed the boards
 window.Echo.channel("boards")
@@ -27,7 +28,7 @@ window.Echo.channel("boards")
         Livewire.dispatch("member_added", { board: e.board });
     })
     .listen(".BoardMemberActions", (e) => {
-        Livewire.dispatch("member_disconnect", { board: e.board })
+        Livewire.dispatch("member_disconnect", { board: e.board });
     });
 
 document.addEventListener("livewire:init", () => {
@@ -105,19 +106,55 @@ function subscribedToBoard(boardId) {
         });
 }
 
+const userId = document
+    .querySelector('meta[name="user-id"]')
+    ?.getAttribute("content");
+const root = document.getElementById("toast-root");
+
+if (userId && window.Echo && root) {
+    window.Echo.private(`user.${userId}`)
+        .subscribed(() => {
+            console.log("✅ Subscribed to user." + userId);
+        })
+        .error((e) => {
+            console.error("❌ Subscription error", e);
+        })
+        .listen(".BoardMemberToast", (toast) => {
+            const container = document.querySelector(
+                "#toast-root .toast-container"
+            );
+            const el = document.querySelector(".sb-toast");
+            console.log("TOAST RECEIVED: ", toast);
+
+            el.textContent = toast.message;
+            console.log(el.textContent);
+
+            el.className = `sb-toast sb-toast-${toast.type}`;
+            console.log("Adding class to the toast");
+
+            container.classList.remove("hidden");
+            console.log("Toast should be shown now");
+
+            setTimeout(() => {
+                container.classList.add("hidden");
+            }, 5000);
+        });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     const btn = document.getElementById("toggleSidebar");
-    if(!btn) return;
-    const key = 'sidebar-collapsed';
+    if (!btn) return;
+    const key = "sidebar-collapsed";
 
-    if(localStorage.getItem(key) === '1') {
-        document.body.classList.add('sidebar-collapsed');
+    if (localStorage.getItem(key) === "1") {
+        document.body.classList.add("sidebar-collapsed");
     }
 
     btn.addEventListener("click", () => {
         document.body.classList.toggle("sidebar-collapsed");
         localStorage.setItem(
-            key, document.body.classList.contains("sidebar-collapsed") ? '1' : '0'
+            key,
+            document.body.classList.contains("sidebar-collapsed") ? "1" : "0"
         );
     });
 });
