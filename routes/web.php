@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LogController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SearchBoard;
@@ -20,6 +21,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/board-create', [DashboardController::class, 'directCreate'])->name('board.create');
     Route::get('/board/{board}', [DashboardController::class, 'accessBoard'])->name('board.access');
     Route::get('/search-board', [SearchBoard::class, 'index'])->name('board.search');
+    Route::get('/board/{board}/activity', [LogController::class, 'index'])->name('boards.activity');
 });
 
 //! FAST LOGIN FOR CHECKS

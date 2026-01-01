@@ -5,6 +5,7 @@ namespace App\Livewire\BoardList;
 use App\Events\List\ListReordered;
 use App\Models\Board;
 use App\Models\ListCard;
+use App\Models\Log;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
@@ -54,9 +55,25 @@ class ListView extends Component
     }
 
     public function reorderLists(int $boardId, array $orderedIds){
+        $lists = ListCard::whereIn('id', $orderedIds)->get()->keyBy('id');
+
+        $movedList = null;
+
         foreach($orderedIds as $index => $listId) {
-            ListCard::where('id', $listId)->update(['position' => $index + 1]);
+            $list = $lists[$listId];
+            if($list->position !== $index + 1 && !$movedList) {
+                $movedList = $list;
+            }
+            $list->update(['position' => $index + 1]);
         }
+
+        Log::create([
+            'board_id' => $boardId,
+            'user_id' => Auth::id(),
+            'loggable_type' => ListCard::class,
+            'loggable_id' => $movedList->id,
+            'details' => 'List "'. $movedList->list_name .'" has been moved in the board',
+        ]);
 
         broadcast(new ListReordered($this->boardId, $orderedIds));
 

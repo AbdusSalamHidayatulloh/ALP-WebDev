@@ -27,12 +27,13 @@ class CreateBoard extends Component
             'isGuest' => false,
         ]);
 
+
         Log::create([
-            'board_id' => $this->board->id,
+            'board_id' => $board->id,
             'user_id' => Auth::id(),
             'loggable_type' => Board::class,
-            'loggable_id' => $this->member->id,
-            'details' => $this->board_name . ' has been succesfully made',
+            'loggable_id' => $board->id,
+            'details' => 'Hello! this is your activity for "' . $this->board_name . '", check any changes right here!',
         ]);
 
         $this->reset('board_name');

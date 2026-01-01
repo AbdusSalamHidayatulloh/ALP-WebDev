@@ -10,7 +10,6 @@ class Log extends Model
 {
     protected $fillable = [
         'details',
-        'dates',
         'board_id',
         'user_id',
     ];

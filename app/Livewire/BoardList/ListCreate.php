@@ -53,8 +53,6 @@ class ListCreate extends Component
 
         broadcast(new ListCreated($list));
 
-        $this->dispatch('list-created');
-
         $this->cancelCreateList();
     }
 

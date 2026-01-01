@@ -70,6 +70,19 @@ class CardList extends Component
             ]);
         }
 
+        if ($fromListId !== $toListId) {
+            $fromList = ListCard::findOrFail($fromListId);
+            $toList = ListCard::findOrFail($toListId);
+
+            Log::create([
+                'board_id' => $this->list->board->id,
+                'user_id' => Auth::id(),
+                'loggable_type' => Card::class,
+                'loggable_id' => $cardId,
+                'details' => 'Card moved from "' . $fromList->list_name . '" to "' . $toList->list_name . '"',
+            ]);
+        }
+
         broadcast(new CardReordered($toListId, $orderedIds, $this->list->board->id))->toOthers();
 
         $this->refreshCards();
@@ -107,7 +120,7 @@ class CardList extends Component
         $card = $cardId ? Card::find($cardId) : $this->selectedCard;
 
         $cardTitle = $card->card_title;
-        $cardIdVal = $card->id;
+        $cardIdVal = $card->getKey();
         $boardId = $card->list->board->id;
 
         $card->delete();
@@ -120,7 +133,7 @@ class CardList extends Component
             'details'       => 'Deleted card: "' . $cardTitle . '"',
         ]);
 
-        if(! $cardId) $this->closeCard();
+        if (! $cardId) $this->closeCard();
 
         $this->refreshCards();
     }

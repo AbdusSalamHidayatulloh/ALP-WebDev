@@ -35,6 +35,8 @@ class CardDelete extends Component
 
         $card = $this->list->cards()->where('id', $this->cardId)->findOrFail();
 
+        $cardIdVal = $card->id;
+
         $cardName = $card->card_title;
 
         $card->delete();
@@ -43,7 +45,7 @@ class CardDelete extends Component
             'board_id' => $this->boardId,
             'user_id' => Auth::id(),
             'loggable_type' => Card::class,
-            'loggable_id' => $card->id,
+            'loggable_id' => $cardIdVal,
             'details' => $cardName . ' has been deleted',
         ]);
         $this->dispatch('card-deleted');

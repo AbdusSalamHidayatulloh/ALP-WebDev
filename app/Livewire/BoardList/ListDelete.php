@@ -34,6 +34,7 @@ class ListDelete extends Component
         }
 
         $listName = $list->list_name;
+        $listIdVal = $list->id;
 
         $list->delete();
 
@@ -41,7 +42,7 @@ class ListDelete extends Component
             'board_id' => $this->boardId,
             'user_id' => Auth::id(),
             'loggable_type' => ListCard::class,
-            'loggable_id' => $list->id,
+            'loggable_id' => $listIdVal,
             'details' => 'List ' . $listName . ' has been deleted.',
         ]);
 

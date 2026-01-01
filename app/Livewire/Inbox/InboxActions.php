@@ -3,7 +3,9 @@
 namespace App\Livewire\Inbox;
 
 use App\Events\Card\CardCreated;
+use App\Models\Card;
 use App\Models\ListCard;
+use App\Models\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Livewire\Attributes\On;
@@ -63,6 +65,14 @@ class InboxActions extends Component
         $card = $list->cards()->create([
             'card_title' => $title,
             'position' => $position
+        ]);
+
+        Log::create([
+            'board_id' => $this->boardId,
+            'user_id' => Auth::id(),
+            'loggable_type' => Card::class,
+            'loggable_id' => $card->id,
+            'details' => 'Card "' . $card->card_title . '" created from inbox',
         ]);
 
         $this->removeInbox($inboxId);

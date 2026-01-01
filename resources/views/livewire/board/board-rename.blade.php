@@ -21,8 +21,8 @@
                 @endif
                 <button class="btn fw-bold" style="background-color:white; border-radius:20px; color:#003BFF;"
                     wire:click="$dispatch('open-modal-members')">Members</button>
-                <button class="btn fw-bold"
-                    style="background-color:white; border-radius:20px; color:#003BFF;">Logs</button>
+                <a class="btn fw-bold text-decoration-none"
+                    style="background-color:white; border-radius:20px; color:#003BFF;" href="{{ route('boards.activity', $board->id) }}">Logs</a>
             </div>
 
             <div class="dropdown d-md-none">
@@ -43,7 +43,7 @@
                         </button>
                     </li>
                     <li>
-                        <button class="dropdown-item">Logs</button>
+                        <a class="dropdown-item text-decoration-none" href="{{ route('boards.activity', $board->id) }}">Logs</a>
                     </li>
                 </ul>
             </div>

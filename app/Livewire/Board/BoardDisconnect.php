@@ -18,6 +18,8 @@ class BoardDisconnect extends Component
         $user = Auth::user();
         $board = Board::findOrFail($this->boardId);
 
+        $userName = $user->name;
+
         $pivot = $board->members()
             ->where('user_id', $user->id)
             ->first()
@@ -34,7 +36,7 @@ class BoardDisconnect extends Component
             'user_id' => $user->id,
             'loggable_type' => Board::class,
             'loggable_id' => $board->id,
-            'details' => 'User ' . $user->name . ' left the board',
+            'details' => 'User ' . $userName . ' left the board',
         ]);
 
         broadcast(new BoardMemberActions($board, $user));

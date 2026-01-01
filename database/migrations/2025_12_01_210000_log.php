@@ -14,8 +14,7 @@ return new class extends Migration
         Schema::create('logs', function(Blueprint $table) {
             $table->id();
             $table->string('details');
-            $table->date('dates');
-            $table->unsignedBigInteger('loggable_id');
+            $table->unsignedBigInteger('loggable_id')->nullable();
             $table->string('loggable_name');
             $table->foreignId('board_id')->constrained('boards')->onDelete('Cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('Cascade');

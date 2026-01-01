@@ -82,7 +82,7 @@ class BoardMemberAction extends Component
             'user_id' => Auth::id(),
             'loggable_type' => User::class,
             'loggable_id' => $this->member->id,
-            'details' => 'Changed role of user ' . $this->member->name . ' to ' . $this->newRole . '.',
+            'details' => 'Changed role of user ' . $this->member->name . ' to ' . $this->role . '.',
         ]);
 
         $toast = [
@@ -94,10 +94,6 @@ class BoardMemberAction extends Component
                 'actor_name' => Auth::user()->name,
                 'created_at' => now()->toISOString()
         ];
-
-        Log::info('BoardMemberAction: toast cached', [
-            'cache_contents' => Cache::get('toast:user:' . $this->member->id)
-        ]);
 
         $toast['message'] = ToastMessage::resolve($toast);
 
@@ -114,6 +110,8 @@ class BoardMemberAction extends Component
             return;
         }
 
+        $memberName = $this->member->name;
+
         if (! $this->isMember($this->member->id)) {
             $this->addError('general', 'This user is not exist on this board.');
             return;
@@ -125,8 +123,8 @@ class BoardMemberAction extends Component
             'board_id' => $this->board->id,
             'user_id' => Auth::id(),
             'loggable_type' => User::class,
-            'loggable_id' => $this->member->id,
-            'details' => 'Removed user ' . $this->member->name . ' from the board',
+            'loggable_id' => $userId,
+            'details' => 'Removed user ' . $memberName . ' from the board',
         ]);
 
         $toast = [
