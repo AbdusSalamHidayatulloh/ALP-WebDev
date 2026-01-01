@@ -85,7 +85,6 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" wire:click="deleteCard()">Delete</button>
-                        <button type="button" class="btn btn-secondary" wire:click="closeCard()">Close</button>
                     </div>
             </div>
         </div>
