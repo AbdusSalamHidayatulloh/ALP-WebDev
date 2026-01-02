@@ -12,36 +12,26 @@ use Illuminate\Queue\SerializesModels;
 
 //!HARUS PAKE `implements ShouldBroadcast` 
 //!JIKA INGIN BISA GANTI DATA SECARA DYNAMIC
-class CardCreated implements ShouldBroadcast
+class CardActions implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $card;
-    public $boardId;
-    //Kita buat file broadcast
-    public function __construct(Card $card)
-    {
-        //Kenapa array? lihat di view, numpuk kayak array
-        $card->load('list');        
-        $this->card = $card->toArray();
-        $this->boardId = $card->list->board_id;
-    }
+    public int $listId;
 
-    /**
-     * Get the channels the event should broadcast on.
-     *
-     * @return array<int, \Illuminate\Broadcasting\Channel>
-     */
+    public function __construct($listId)
+    {
+        $this->listId = $listId;
+    }
 
     //Broadcast ini mirip mirip nama yang akan dipakai di app.js
     //(but after this, go to the Livewire [controller])
     public function broadcastOn()
     {
-        return new PrivateChannel('board.' . $this->boardId);
+        return new PrivateChannel('list.' . $this->listId);
     }
 
     public function broadcastAs()
     {
-        return 'CardCreated';
+        return 'CardActions';
     }
 }

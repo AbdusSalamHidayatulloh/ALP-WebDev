@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Card;
 
+use App\Events\Card\CardActions;
 use App\Events\Card\CardReordered;
 use App\Models\Card;
 use App\Models\ListCard;
@@ -133,6 +134,8 @@ class CardList extends Component
             'details'       => 'Deleted card: "' . $cardTitle . '"',
         ]);
 
+        broadcast(new CardActions($this->selectedCard->list_id));
+
         if (! $cardId) $this->closeCard();
 
         $this->refreshCards();
@@ -153,6 +156,8 @@ class CardList extends Component
                 'loggable_id'   => $this->selectedCard->id,
                 'details'       => 'Changed card title: "' . $oldTitle . '" → "' . $this->cardTitle . '"',
             ]);
+
+            broadcast(new CardActions($this->selectedCard->list_id));
         }
         $this->editingTitle = !$this->editingTitle;
     }
@@ -160,7 +165,6 @@ class CardList extends Component
     public function toggleEditDescription()
     {
         if ($this->editingDescription) {
-            $oldDesc = $this->selectedCard->description;
             $this->selectedCard->update([
                 'description' => $this->cardDescription,
             ]);
@@ -172,6 +176,8 @@ class CardList extends Component
                 'loggable_id'   => $this->selectedCard->id,
                 'details'       => 'Description has been updated for ' . $this->selectedCard->cardTitle,
             ]);
+
+            broadcast(new CardActions($this->selectedCard->list_id));
         }
         $this->editingDescription = !$this->editingDescription;
     }

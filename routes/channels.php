@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Card;
 use App\Models\ListCard;
 use Illuminate\Support\Facades\Broadcast;
 
@@ -17,4 +18,10 @@ Broadcast::channel('list.{listId}', function($user, $listId) {
 
 Broadcast::channel('user.{userId}', function($user, $userId) {
     return (int) $user->id === (int) $userId;
+});
+
+Broadcast::channel('card.{cardId}', function($user, $cardId){
+    return Card::where('id', $cardId)->whereHas('list.board.members', function($q) use ($user) {
+        $q->where('users.id', $user->id);
+    })->exists();
 });

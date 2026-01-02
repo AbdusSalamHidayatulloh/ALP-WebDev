@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Card;
 
+use App\Events\Card\CardActions;
 use App\Events\Card\CardCreated;
 use App\Models\Card;
 use App\Models\Log;
@@ -51,7 +52,7 @@ class CardCreate extends Component
         ]);
 
         $this->reset('card_title');
-        broadcast(new CardCreated($card));
+        broadcast(new CardActions($this->list_id));
         $this->cancelCreateCard();
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Inbox;
 
+use App\Events\Card\CardActions;
 use App\Events\Card\CardCreated;
 use App\Models\Card;
 use App\Models\ListCard;
@@ -77,7 +78,7 @@ class InboxActions extends Component
 
         $this->removeInbox($inboxId);
 
-        broadcast(new CardCreated($card));
+        broadcast(new CardActions($listId));
     }
 
     public function removeInbox(string $inboxId) {

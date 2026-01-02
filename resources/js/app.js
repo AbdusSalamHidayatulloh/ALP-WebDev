@@ -113,12 +113,6 @@ const root = document.getElementById("toast-root");
 
 if (userId && window.Echo && root) {
     window.Echo.private(`user.${userId}`)
-        .subscribed(() => {
-            console.log("✅ Subscribed to user." + userId);
-        })
-        .error((e) => {
-            console.error("❌ Subscription error", e);
-        })
         .listen(".BoardMemberToast", (toast) => {
             const container = document.querySelector(
                 "#toast-root .toast-container"
@@ -139,6 +133,15 @@ if (userId && window.Echo && root) {
                 container.classList.add("hidden");
             }, 5000);
         });
+}
+
+if(window.listIds) {
+    window.listIds.forEach(listId => {
+        window.Echo.private(`list.${listId}`).listen('.CardActions', (e) => {
+            console.log('Card has been done something: ', e)
+            Livewire.dispatch('card-refreshed')
+        })
+    })
 }
 
 document.addEventListener("DOMContentLoaded", () => {
