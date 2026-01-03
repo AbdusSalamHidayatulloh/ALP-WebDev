@@ -40,13 +40,13 @@
                         <button type="button" class="btn-close" wire:click="closeCard()"></button>
                     </div>
 
-                    <div class="modal-body">
+                    <div class="modal-body" style="max-height: 70vh; overflow-y:auto">
                         <!-- Description Section -->
-                        <div class="mb-3">
+                        <div class="mb-3 desc-wrapper">
                             <label class="form-label"><strong>Description</strong></label>
                             @if ($editingDescription)
                                 <div>
-                                    <textarea wire:model="cardDescription" class="form-control mb-2" placeholder="Add a description..." rows="4"
+                                    <textarea wire:model="cardDescription" class="form-control mb-2" placeholder="Add a description..."
                                         wire:change="toggleEditDescription()" autofocus></textarea>
                                     <div class="d-flex flex-row align-items-center">
                                         <button wire:click="toggleEditDescription()" wire:loading.attr="disabled">
@@ -60,10 +60,13 @@
                                     </div>
                                 </div>
                             @else
-                                <div wire:click="toggleEditDescription()"
-                                    style="cursor: pointer; padding: 8px; border-radius: 4px; min-height: 40px; background-color: #f8f9fa;">
-                                    {{ $cardDescription ?: 'Add a description...' }}
-                                </div>
+                                <div class="desc-preview" wire:click="toggleEditDescription()"
+                                    style="cursor: pointer;
+                                            padding: 8px;
+                                            border-radius: 4px;
+                                            background-color: #f8f9fa;
+                                            white-space:pre-wrap;
+                                            " >{{ $cardDescription ?: 'Add a description...' }}</div>
                             @endif
                         </div>
 
