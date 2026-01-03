@@ -1,10 +1,14 @@
 <div>
     <div class="mb-3">
         <div class="d-flex justify-content-between align-items-center mb-2">
-            <h6 class="mb-0"><i class="fas fa-layer-group"></i> Card Templates</h6>
+            <h6 class="mb-0 d-flex justify-content-center align-items-center gap-1">
+                <span class="material-symbols-rounded font-logo">layers</span>
+                <span>Card Templates</span>
+            </h6>
             @if (!$showForm)
-                <button type="button" class="btn btn-sm btn-primary" wire:click="createTemplate">
-                    <i class="fas fa-plus"></i> New Template
+                <button type="button" class="btn btn-sm btn-primary d-flex align-items-center gap-1" wire:click="createTemplate">
+                    <span class="material-symbols-rounded font-logo">add</span>
+                    <span>New Template</span>
                 </button>
             @endif
         </div>
@@ -35,9 +39,9 @@
 
                                     @if ($template->dates)
                                         <div class="mb-2">
-                                            <span class="badge bg-secondary">
-                                                <i class="fas fa-clock"></i>
-                                                {{ \Carbon\Carbon::parse($template->dates)->format('M d, Y') }}
+                                            <span class="badge bg-secondary d-inline-flex align-items-center gap-1">
+                                                <span class="material-symbols-rounded font-logo">schedule</span>
+                                                <span>{{ \Carbon\Carbon::parse($template->dates)->format('M d, Y') }}</span>
                                             </span>
                                         </div>
                                     @endif
@@ -54,9 +58,9 @@
 
                                     @if ($template->customFields->count() > 0)
                                         <div class="mb-2">
-                                            <small class="text-muted">
-                                                <i class="fas fa-list"></i>
-                                                {{ $template->customFields->count() }} custom field(s)
+                                            <small class="text-muted d-inline-flex align-items-center gap-1">
+                                                <span class="material-symbols-rounded font-logo">list</span>
+                                                <span>{{ $template->customFields->count() }} custom field(s)</span>
                                             </small>
                                         </div>
                                     @endif
@@ -64,9 +68,10 @@
 
                                 <div class="card-footer bg-white border-top">
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <button type="button" class="btn btn-sm btn-outline-primary"
+                                        <button type="button" class="btn btn-sm btn-outline-primary d-flex align-items-center gap-1"
                                             wire:click="editTemplate({{ $template->id }})">
-                                            <i class="fas fa-edit"></i> Edit
+                                            <span class="material-symbols-rounded font-logo">edit</span>
+                                            <span>Edit</span>
                                         </button>
 
                                         <div class="d-flex gap-2">
@@ -84,8 +89,8 @@
                 </div>
             @else
                 <div class="alert alert-info">
-                    <i class="fas fa-info-circle"></i> No templates yet. Create your first template to reuse card
-                    configurations!
+                    <span class="material-symbols-rounded font-logo align-middle">info</span>
+                    <span>No templates yet. Create your first template to reuse card configurations!</span>
                 </div>
             @endif
         @endif

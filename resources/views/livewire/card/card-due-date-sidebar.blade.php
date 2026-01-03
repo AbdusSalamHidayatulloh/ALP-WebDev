@@ -1,7 +1,8 @@
 <div class="h-100">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h5 class="mb-0">
-            <i class="fas fa-clock text-primary"></i> Due Dates
+        <h5 class="mb-0 d-flex align-items-center gap-1">
+            <span class="material-symbols-rounded font-logo text-primary">schedule</span>
+            <span>Due Dates</span>
         </h5>
         
         <!-- Limit Selector -->
@@ -44,17 +45,17 @@
                             </div>
 
                             <!-- List Name -->
-                            <div class="small text-muted mb-1">
-                                <i class="fas fa-list" style="font-size: 10px;"></i>
-                                {{ $card->list->list_name }}
+                            <div class="small text-muted mb-1 d-flex align-items-center gap-1">
+                                <span class="material-symbols-rounded font-logo" style="font-size: 16px;">list</span>
+                                <span>{{ $card->list->list_name }}</span>
                             </div>
 
                             <!-- Due Date -->
                             <div class="mb-1">
                                 <span
-                                    class="badge {{ $isOverdue ? 'bg-danger' : ($isDueSoon ? 'bg-warning text-dark' : 'bg-secondary') }} small">
-                                    <i class="fas fa-clock"></i>
-                                    {{ $dueDate->format('M d, Y') }}
+                                    class="badge d-inline-flex align-items-center gap-1 {{ $isOverdue ? 'bg-danger' : ($isDueSoon ? 'bg-warning text-dark' : 'bg-secondary') }} small">
+                                    <span class="material-symbols-rounded font-logo">schedule</span>
+                                    <span>{{ $dueDate->format('M d, Y') }}</span>
                                 </span>
                             </div>
                             
@@ -63,12 +64,14 @@
                             </div>
 
                             @if ($isOverdue)
-                                <div class="small text-danger mt-1">
-                                    <i class="fas fa-exclamation-triangle"></i> Overdue
+                                <div class="small text-danger mt-1 d-flex align-items-center gap-1">
+                                    <span class="material-symbols-rounded font-logo">error</span>
+                                    <span>Overdue</span>
                                 </div>
                             @elseif($isDueSoon)
-                                <div class="small text-warning mt-1">
-                                    <i class="fas fa-bell"></i> Due soon!
+                                <div class="small text-warning mt-1 d-flex align-items-center gap-1">
+                                    <span class="material-symbols-rounded font-logo">notifications_active</span>
+                                    <span>Due soon!</span>
                                 </div>
                             @endif
                         </div>
@@ -77,7 +80,7 @@
             </div>
         @else
             <div class="text-center text-muted py-5">
-                <i class="fas fa-calendar-check fa-3x mb-3 opacity-50"></i>
+                <span class="material-symbols-rounded font-logo" style="font-size: 48px; opacity: 0.5;">event_available</span>
                 <p class="mb-0">No upcoming due dates</p>
             </div>
         @endif

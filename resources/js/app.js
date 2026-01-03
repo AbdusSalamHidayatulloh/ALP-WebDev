@@ -204,3 +204,22 @@ document.addEventListener("DOMContentLoaded", () => {
         );
     });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+    const btn = document.getElementById("toggleRightSidebar");
+    if (!btn) return;
+
+    const key = "right-sidebar-collapsed";
+
+    if (localStorage.getItem(key) === "1") {
+        document.body.classList.add("right-sidebar-collapsed");
+    }
+
+    btn.addEventListener("click", () => {
+        document.body.classList.toggle("right-sidebar-collapsed");
+        localStorage.setItem(
+            key,
+            document.body.classList.contains("right-sidebar-collapsed") ? "1" : "0"
+        );
+    });
+});

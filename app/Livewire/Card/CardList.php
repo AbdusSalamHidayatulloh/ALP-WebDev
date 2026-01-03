@@ -324,6 +324,7 @@ class CardList extends Component
         ]);
 
         Log::create([
+            'board_id'=> $board->id,
             'user_id' => Auth::id(),
             'loggable_type' => Card::class,
             'loggable_id' => $this->selectedCard->id,
@@ -353,6 +354,7 @@ class CardList extends Component
         ]);
 
         Log::create([
+            'board_id'=> $board->id,
             'user_id' => Auth::id(),
             'loggable_type' => Card::class,
             'loggable_id' => $this->selectedCard->id,

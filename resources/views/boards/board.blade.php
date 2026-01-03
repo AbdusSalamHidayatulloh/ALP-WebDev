@@ -8,28 +8,33 @@
         {{-- Board --}}
         <main id="boardContent" class="p-4">
             <livewire:board.board-rename :board="$board" :key="'board-renamed-' . $board->id . '-' . $board->updated_at" />
-            <livewire:label.label-view :board="$board" />
-            <livewire:card-template.card-template-list :board="$board" />
-            <livewire:custom-field.custom-field-list :board="$board" />
-            <livewire:custom-field.custom-field-create :board="$board" />
             <livewire:board.board-invite :board="$board" />
             <livewire:board.board-member-list :board="$board" />
+            <livewire:boardlist.list-view :board="$board" />
             @push('scripts')
                 <script>
                     window.boardId = {{ $board->id }};
                 </script>
             @endpush
-            <livewire:boardlist.list-view :board="$board" />
+            <div class="mt-3">
+                <livewire:label.label-view :board="$board" />
+                <livewire:card-template.card-template-list :board="$board" />
+                <livewire:custom-field.custom-field-list :board="$board" />
+                <livewire:custom-field.custom-field-create :board="$board" />
+            </div>
         </main>
 
-        <aside id="rightSidebar" class="p-3 border-start bg-light" style="width: 320px; min-width: 320px;">
+        <aside id="rightSidebar" class="p-3 border-start bg-light">
             <livewire:card.card-due-date-sidebar :board="$board" />
         </aside>
 
-        <div class="position-absolute d-flex flex-row p-2 bg-white p-1 shadow"
+        <div class="position-absolute d-flex flex-row align-items-center gap-2 p-2 bg-white p-1 shadow"
             style="bottom: 40px; left: 50%; border-radius: 10px;">
             <button id="toggleSidebar" class="btn btn-primary mb-3">
-                ☰
+                <span class="material-symbols-rounded font-logo">menu</span>
+            </button>
+            <button id="toggleRightSidebar" class="btn btn-primary mb-3">
+                <span class="material-symbols-rounded font-logo">event</span>
             </button>
         </div>
 

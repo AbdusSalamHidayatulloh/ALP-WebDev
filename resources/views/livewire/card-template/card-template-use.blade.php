@@ -1,7 +1,8 @@
 <div>
     <!-- Use Template Button -->
-    <button type="button" class="btn btn-sm btn-success" wire:click="openModal">
-        <i class="fas fa-plus-circle"></i> Use
+    <button type="button" class="btn btn-sm btn-success d-flex align-items-center gap-1" wire:click="openModal">
+        <span class="material-symbols-rounded font-logo">add_circle</span>
+        <span>Use</span>
     </button>
 
     <!-- Modal -->
@@ -74,15 +75,17 @@
                         </button>
                         <button 
                             type="button" 
-                            class="btn btn-primary" 
+                            class="btn btn-primary d-flex align-items-center gap-1" 
                             wire:click="createCardFromTemplate"
                             wire:loading.attr="disabled"
                             wire:target="createCardFromTemplate">
-                            <span wire:loading.remove wire:target="createCardFromTemplate">
-                                <i class="fas fa-plus"></i> Create Card
+                            <span wire:loading.remove wire:target="createCardFromTemplate" class="d-flex align-items-center gap-1">
+                                <span class="material-symbols-rounded font-logo">add_circle</span>
+                                <span>Create Card</span>
                             </span>
-                            <span wire:loading wire:target="createCardFromTemplate">
-                                <i class="fas fa-spinner fa-spin"></i> Creating...
+                            <span wire:loading wire:target="createCardFromTemplate" class="d-flex align-items-center gap-1">
+                                <span class="material-symbols-rounded font-logo icon-spin">progress_activity</span>
+                                <span>Creating...</span>
                             </span>
                         </button>
                     </div>

@@ -3,9 +3,13 @@
         <!-- Label List View -->
         <div class="mb-3">
             <div class="d-flex justify-content-between align-items-center mb-2">
-                <h6 class="mb-0"><i class="fas fa-tags"></i> Board Labels</h6>
-                <button type="button" class="btn btn-sm btn-primary" wire:click="createLabel">
-                    <i class="fas fa-plus"></i> New Label
+                <h6 class="mb-0 d-flex align-items-center gap-1">
+                    <span class="material-symbols-rounded font-logo">sell</span>
+                    <span>Board Labels</span>
+                </h6>
+                <button type="button" class="btn btn-sm btn-primary d-flex align-items-center gap-1" wire:click="createLabel">
+                    <span class="material-symbols-rounded font-logo">add</span>
+                    <span>New Label</span>
                 </button>
             </div>
 
@@ -20,8 +24,8 @@
                                 <small class="text-muted">{{ $label->cards->count() }} card(s)</small>
                             </div>
                             <div class="btn-group btn-group-sm">
-                                <button type="button" class="btn btn-outline-secondary" wire:click="editLabel({{ $label->id }})">
-                                    <i class="fas fa-edit"></i>
+                                <button type="button" class="btn btn-outline-secondary d-flex align-items-center gap-1" wire:click="editLabel({{ $label->id }})">
+                                    <span class="material-symbols-rounded font-logo">edit</span>
                                 </button>
                                 <livewire:label.label-delete :label="$label" :key="'label-delete-' . $label->id" />
                             </div>
@@ -29,8 +33,9 @@
                     @endforeach
                 </div>
             @else
-                <div class="alert alert-info">
-                    <i class="fas fa-info-circle"></i> No labels yet. Create your first label!
+                <div class="alert alert-info d-flex align-items-center gap-1">
+                    <span class="material-symbols-rounded font-logo">info</span>
+                    <span>No labels yet. Create your first label!</span>
                 </div>
             @endif
         </div>

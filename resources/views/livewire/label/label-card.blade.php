@@ -1,5 +1,5 @@
 <div class="label-card-component">
-    <label class="form-label"><strong><i class="fas fa-tag"></i> Label</strong></label>
+    <label class="form-label d-flex align-items-center"><strong><span class="material-symbols-rounded font-logo">tag</span> <span>Label</span></strong></label>
     
     <div class="position-relative">
         @if($currentLabel)
@@ -8,17 +8,17 @@
                 <span class="badge" style="background-color: {{ $currentLabel->color }}; font-size: 14px; padding: 8px 12px;">
                     {{ $currentLabel->title }}
                 </span>
-                <button type="button" class="btn btn-sm btn-outline-danger" wire:click="removeLabel">
-                    <i class="fas fa-times"></i> Remove
+                <button type="button" class="btn btn-sm btn-outline-danger d-flex align-items-center" wire:click="removeLabel">
+                    <span class="material-symbols-rounded font-logo">close</span> <span>Remove</span>
                 </button>
-                <button type="button" class="btn btn-sm btn-outline-secondary" wire:click="toggleDropdown">
-                    <i class="fas fa-edit"></i> Change
+                <button type="button" class="btn btn-sm btn-outline-secondary d-flex align-items-center" wire:click="toggleDropdown">
+                    <span class="material-symbols-rounded font-logo">edit</span> <span>Change</span>
                 </button>
             </div>
         @else
             <!-- No label attached -->
-            <button type="button" class="btn btn-sm btn-outline-primary" wire:click="toggleDropdown">
-                <i class="fas fa-plus"></i> Add Label
+            <button type="button" class="btn btn-sm btn-outline-primary d-flex align-items-center" wire:click="toggleDropdown">
+                <span class="material-symbols-rounded font-logo">add</span> <span>Add Label</span>
             </button>
         @endif
 
@@ -38,7 +38,7 @@
                             wire:click="attachLabel({{ $label->id }})">
                             <span>{{ $label->title }}</span>
                             @if($selectedLabelId == $label->id)
-                                <i class="fas fa-check"></i>
+                                <span class="material-symbols-rounded font-logo">check</span>
                             @endif
                         </button>
                     @empty

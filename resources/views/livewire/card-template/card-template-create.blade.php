@@ -87,7 +87,7 @@
                                 wire:click="selectLabel({{ $label->id }})">
                                 {{ $label->title }}
                                 @if ($selectedLabel === $label->id)
-                                    <i class="fas fa-check ms-1"></i>
+                                    <span class="material-symbols-rounded font-logo">check</span>
                                 @endif
                             </button>
                         @endforeach
@@ -136,10 +136,16 @@
             <div class="d-flex gap-2">
                 <button type="submit" class="btn btn-primary" wire:loading.attr="disabled">
                     <span wire:loading.remove wire:target="save">
-                        <i class="fas fa-save"></i> {{ $templateId ? 'Update' : 'Create' }}
+                        <span class="d-flex align-items-center gap-1">
+                            <span class="material-symbols-rounded font-logo">save</span>
+                            <span>{{ $templateId ? 'Update' : 'Create' }}</span>
+                        </span>
                     </span>
                     <span wire:loading wire:target="save">
-                        <i class="fas fa-spinner fa-spin"></i> Saving...
+                        <span class="d-flex align-items-center gap-1">
+                            <span class="material-symbols-rounded font-logo icon-spin">progress_activity</span>
+                            <span>Saving...</span>
+                        </span>
                     </span>
                 </button>
                 <button type="button" class="btn btn-secondary" wire:click="cancel">

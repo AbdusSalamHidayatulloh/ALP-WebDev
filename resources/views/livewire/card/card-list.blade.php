@@ -34,9 +34,9 @@
                     {{-- Due Date Badge (if exists) --}}
                     @if ($ca->dates)
                         <span
-                            class="badge {{ $ca->isOverdue() ? 'bg-danger' : ($ca->isDueSoon() ? 'bg-warning text-dark' : 'bg-secondary') }} ms-2">
-                            <i class="fas fa-clock"></i>
-                            {{ \Carbon\Carbon::parse($ca->dates)->format('M d') }}
+                            class="badge d-inline-flex align-items-center gap-1 {{ $ca->isOverdue() ? 'bg-danger' : ($ca->isDueSoon() ? 'bg-warning text-dark' : 'bg-secondary') }} ms-2">
+                            <span class="material-symbols-rounded font-logo">schedule</span>
+                            <span>{{ \Carbon\Carbon::parse($ca->dates)->format('M d') }}</span>
                         </span>
                     @endif
                 </div>
@@ -85,8 +85,9 @@
                     <div class="modal-body" style="max-height: 70vh; overflow-y:auto">
                         <!-- Completion Status Badge -->
                         @if ($selectedCard->is_completed)
-                            <div class="alert alert-success mb-3">
-                                <i class="fas fa-check-circle"></i> This card is marked as complete
+                            <div class="alert alert-success mb-3 d-flex align-items-center gap-1">
+                                <span class="material-symbols-rounded font-logo">check_circle</span>
+                                <span>This card is marked as complete</span>
                             </div>
                         @endif
 
@@ -107,7 +108,10 @@
 
                         <!-- Image Section -->
                         <div class="mb-3">
-                            <label class="form-label"><strong><i class="fas fa-image"></i> Image</strong></label>
+                            <label class="form-label d-flex align-items-center gap-1">
+                                <span class="material-symbols-rounded font-logo">image</span>
+                                <strong class="mb-0">Image</strong>
+                            </label>
 
                             @if ($editingImage)
                                 <!-- Upload Form -->
@@ -140,14 +144,16 @@
                                     <small class="text-muted d-block mb-2">Max size: 2MB. Formats: JPG, PNG, GIF</small>
 
                                     <div class="d-flex gap-2">
-                                        <button type="button" class="btn btn-primary btn-sm" wire:click="uploadImage"
+                                        <button type="button" class="btn btn-primary btn-sm d-flex align-items-center gap-1" wire:click="uploadImage"
                                             wire:loading.attr="disabled" wire:target="newImage, uploadImage"
                                             @if (!$newImage) disabled @endif>
-                                            <span wire:loading.remove wire:target="uploadImage">
-                                                <i class="fas fa-upload"></i> Upload
+                                            <span wire:loading.remove wire:target="uploadImage" class="d-flex align-items-center gap-1">
+                                                <span class="material-symbols-rounded font-logo">upload</span>
+                                                <span>Upload</span>
                                             </span>
-                                            <span wire:loading wire:target="uploadImage">
-                                                <i class="fas fa-spinner fa-spin"></i> Uploading...
+                                            <span wire:loading wire:target="uploadImage" class="d-flex align-items-center gap-1">
+                                                <span class="material-symbols-rounded font-logo icon-spin">progress_activity</span>
+                                                <span>Uploading...</span>
                                             </span>
                                         </button>
                                         <button type="button" class="btn btn-secondary btn-sm"
@@ -167,14 +173,16 @@
                                                 onclick="window.open('{{ \Storage::url($cardImage) }}', '_blank')">
                                         </div>
                                         <div class="mt-2">
-                                            <button type="button" class="btn btn-sm btn-outline-primary"
+                                            <button type="button" class="btn btn-sm btn-outline-primary d-flex align-items-center gap-1"
                                                 wire:click="toggleEditImage">
-                                                <i class="fas fa-edit"></i> Change Image
+                                                <span class="material-symbols-rounded font-logo">edit</span>
+                                                <span>Change Image</span>
                                             </button>
-                                            <button type="button" class="btn btn-sm btn-outline-danger"
+                                            <button type="button" class="btn btn-sm btn-outline-danger d-flex align-items-center gap-1"
                                                 wire:click="removeImage"
                                                 onclick="return confirm('Remove this image?')">
-                                                <i class="fas fa-trash"></i> Remove
+                                                <span class="material-symbols-rounded font-logo">delete</span>
+                                                <span>Remove</span>
                                             </button>
                                         </div>
                                     </div>
@@ -182,9 +190,10 @@
                                     <div class="text-center py-3"
                                         style="background-color: #f8f9fa; border-radius: 4px;">
                                         <p class="text-muted mb-2">No image attached</p>
-                                        <button type="button" class="btn btn-sm btn-primary"
+                                        <button type="button" class="btn btn-sm btn-primary d-flex align-items-center gap-1"
                                             wire:click="toggleEditImage">
-                                            <i class="fas fa-plus"></i> Add Image
+                                            <span class="material-symbols-rounded font-logo">add</span>
+                                            <span>Add Image</span>
                                         </button>
                                     </div>
                                 @endif
@@ -194,7 +203,10 @@
                         <hr>
 
                         <div class="mb-3">
-                            <label class="form-label"><strong><i class="fas fa-clock"></i> Due Date</strong></label>
+                            <label class="form-label d-flex align-items-center gap-1">
+                                <span class="material-symbols-rounded font-logo">schedule</span>
+                                <strong class="mb-0">Due Date</strong>
+                            </label>
 
                             @if ($editingDueDate)
                                 <!-- Edit Due Date Form -->
@@ -209,8 +221,9 @@
                                     </div>
 
                                     <div class="d-flex gap-2">
-                                        <button type="submit" class="btn btn-primary btn-sm">
-                                            <i class="fas fa-save"></i> Save
+                                        <button type="submit" class="btn btn-primary btn-sm d-flex align-items-center gap-1">
+                                            <span class="material-symbols-rounded font-logo">save</span>
+                                            <span>Save</span>
                                         </button>
                                         <button type="button" class="btn btn-secondary btn-sm"
                                             wire:click="toggleEditDueDate">
@@ -223,16 +236,19 @@
                                 @if ($cardDueDate)
                                     <div class="due-date-display p-2 border rounded">
                                         @if ($selectedCard->isOverdue())
-                                            <span class="badge bg-danger mb-2">
-                                                <i class="fas fa-exclamation-triangle"></i> Overdue
+                                            <span class="badge bg-danger mb-2 d-inline-flex align-items-center gap-1">
+                                                <span class="material-symbols-rounded font-logo">error</span>
+                                                <span>Overdue</span>
                                             </span>
                                         @elseif($selectedCard->isDueSoon())
-                                            <span class="badge bg-warning text-dark mb-2">
-                                                <i class="fas fa-clock"></i> Due Soon
+                                            <span class="badge bg-warning text-dark mb-2 d-inline-flex align-items-center gap-1">
+                                                <span class="material-symbols-rounded font-logo">schedule</span>
+                                                <span>Due Soon</span>
                                             </span>
                                         @else
-                                            <span class="badge bg-success mb-2">
-                                                <i class="fas fa-check"></i> On Track
+                                            <span class="badge bg-success mb-2 d-inline-flex align-items-center gap-1">
+                                                <span class="material-symbols-rounded font-logo">check_circle</span>
+                                                <span>On Track</span>
                                             </span>
                                         @endif
 
@@ -246,14 +262,16 @@
                                         </div>
 
                                         <div>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary"
+                                            <button type="button" class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1"
                                                 wire:click="toggleEditDueDate">
-                                                <i class="fas fa-edit"></i> Edit
+                                                <span class="material-symbols-rounded font-logo">edit</span>
+                                                <span>Edit</span>
                                             </button>
-                                            <button type="button" class="btn btn-sm btn-outline-danger"
+                                            <button type="button" class="btn btn-sm btn-outline-danger d-flex align-items-center gap-1"
                                                 wire:click="removeDueDate"
                                                 onclick="return confirm('Remove due date?')">
-                                                <i class="fas fa-trash"></i> Remove
+                                                <span class="material-symbols-rounded font-logo">delete</span>
+                                                <span>Remove</span>
                                             </button>
                                         </div>
                                     </div>
@@ -261,9 +279,10 @@
                                     <div class="text-center py-3"
                                         style="background-color: #f8f9fa; border-radius: 4px;">
                                         <p class="text-muted mb-2">No due date set</p>
-                                        <button type="button" class="btn btn-sm btn-primary"
+                                        <button type="button" class="btn btn-sm btn-primary d-flex align-items-center gap-1"
                                             wire:click="toggleEditDueDate">
-                                            <i class="fas fa-plus"></i> Add Due Date
+                                            <span class="material-symbols-rounded font-logo">add</span>
+                                            <span>Add Due Date</span>
                                         </button>
                                     </div>
                                 @endif

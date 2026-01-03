@@ -22,6 +22,7 @@ body {
   white-space: nowrap;
 }
 
+/* Left sidebar */
 #sidebar {
   width: 260px;
   position: fixed;
@@ -36,10 +37,11 @@ body {
 
 #boardContent {
   margin-left: 260px;
+  margin-right: 320px;
   overflow-y: auto;
   height: calc(100vh - 100px);
   flex-grow: 1;
-  transition: margin-left 0.3s ease;
+  transition: margin-left 0.3s ease, margin-right 0.3s ease;
 }
 
 body.sidebar-collapsed #sidebar {
@@ -70,6 +72,34 @@ body.sidebar-collapsed #boardContent {
   background-color: rgba(255, 255, 255, 0.282);
 }
 
+/* Right Side bar */
+
+#rightSidebar {
+  width: 320px;
+  position: fixed;
+  top: 85px;
+  right: 0;
+  bottom: 0;
+  overflow-y: auto;
+  flex-grow: 0;
+  transform: translateX(0);
+  transition: transform 0.3s ease;
+}
+
+body.right-sidebar-collapsed #rightSidebar {
+  transform: translateX(320px);
+}
+
+body.sidebar-collapsed #boardContent {
+  margin-left: 0 !important;
+}
+
+body.right-sidebar-collapsed #boardContent {
+  margin-right: 0 !important;
+}
+
+
+/* TOAST */
 .toast-container {
   position: fixed;
   bottom: 20px;
@@ -111,4 +141,23 @@ body.sidebar-collapsed #boardContent {
     opacity: 1;
     transform: translateX(0);
   }
+}
+
+.icon-spin {
+  display: inline-block;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.icon-spin {
+  display: inline-block;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }

@@ -52,8 +52,8 @@
                 </div>
 
                 <small class="text-muted d-block mt-2">
-                    <i class="fas fa-info-circle"></i> Click the color square to open the color picker, or select from
-                    presets below
+                    <span class="material-symbols-rounded font-logo align-middle">info</span>
+                    Click the color square to open the color picker, or select from presets below
                 </small>
             </div>
 
@@ -72,12 +72,14 @@
 
             <!-- Action Buttons -->
             <div class="d-flex gap-2">
-                <button type="submit" class="btn btn-primary" wire:loading.attr="disabled">
-                    <span wire:loading.remove wire:target="saveData">
-                        <i class="fas fa-save"></i> {{ $labelId ? 'Update' : 'Create' }}
+                <button type="submit" class="btn btn-primary d-flex align-items-center gap-1" wire:loading.attr="disabled">
+                    <span wire:loading.remove wire:target="saveData" class="d-flex align-items-center gap-1">
+                        <span class="material-symbols-rounded font-logo">save</span>
+                        <span>{{ $labelId ? 'Update' : 'Create' }}</span>
                     </span>
-                    <span wire:loading wire:target="saveData">
-                        <i class="fas fa-spinner fa-spin"></i> Saving...
+                    <span wire:loading wire:target="saveData" class="d-flex align-items-center gap-1">
+                        <span class="material-symbols-rounded font-logo icon-spin">progress_activity</span>
+                        <span>Saving...</span>
                     </span>
                 </button>
                 <button type="button" class="btn btn-secondary" wire:click="cancel">
