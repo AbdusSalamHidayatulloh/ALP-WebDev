@@ -2,6 +2,7 @@
 
 namespace App\Livewire\CustomField;
 
+use App\Events\CustomField\CustomFieldBoard;
 use App\Models\CustomField;
 use App\Models\Log;
 use Illuminate\Support\Facades\Auth;
@@ -11,10 +12,6 @@ class CustomFieldDelete extends Component
 {
     public $field;
     public $board;
-
-    protected $listeners = [
-        'field-deleted' => 'refreshParent',
-    ];
 
     public function mount(CustomField $field)
     {
@@ -43,7 +40,7 @@ class CustomFieldDelete extends Component
             'details' => 'Deleted custom field "' . $customFieldName . '"',
         ]);
 
-        $this->dispatch('field-deleted');
+        broadcast(new CustomFieldBoard($this->board->id));
     }
 
     public function render()

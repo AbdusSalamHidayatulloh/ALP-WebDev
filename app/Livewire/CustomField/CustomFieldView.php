@@ -13,6 +13,7 @@ class CustomFieldView extends Component
 
     protected $listeners = [
         'refresh-fields' => 'refresh',
+        'refresh-fields-card' => 'refreshListCard',
         'reset-fields' => 'resetEdit',
     ];
 

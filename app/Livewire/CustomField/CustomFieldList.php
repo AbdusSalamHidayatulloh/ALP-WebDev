@@ -11,9 +11,7 @@ class CustomFieldList extends Component
     public $fields = [];
 
     protected $listeners = [
-        'field-created' => 'loadFields',
         'field-updated' => 'loadFields',
-        'field-deleted' => 'loadFields',
     ];
 
     public function mount(Board $board)

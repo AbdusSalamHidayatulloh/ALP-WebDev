@@ -2,6 +2,7 @@
 
 namespace App\Livewire\CustomField;
 
+use App\Events\CustomField\CustomFieldBoard;
 use App\Models\Board;
 use App\Models\CustomField;
 use App\Models\Log;
@@ -53,7 +54,7 @@ class CustomFieldCreate extends Component
         $this->fieldTitle = '';
         $this->fieldType = 'text';
         $this->showForm = false;
-        $this->dispatch('field-created');
+        broadcast(new CustomFieldBoard($this->board->id));
     }
 
     public function render()

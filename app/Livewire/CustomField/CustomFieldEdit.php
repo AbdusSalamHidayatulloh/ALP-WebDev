@@ -2,6 +2,7 @@
 
 namespace App\Livewire\CustomField;
 
+use App\Events\CustomField\CustomFieldBoard;
 use App\Models\CustomField;
 use App\Models\Log;
 use Illuminate\Support\Facades\Auth;
@@ -25,6 +26,16 @@ class CustomFieldEdit extends Component
         $this->board = $field->board;
         $this->fieldTitle = $field->title;
         $this->fieldType = $field->type;
+    }
+
+    public function hydrate()
+    {
+        if (! $this->field || ! $this->field->exists) {
+            return;
+        }
+
+        $this->fieldTitle = $this->field->title;
+        $this->fieldType = $this->field->type;
     }
 
     public function toggleEditMode()
@@ -60,6 +71,7 @@ class CustomFieldEdit extends Component
 
         $this->editMode = false;
         $this->dispatch('field-updated');
+        broadcast(new CustomFieldBoard($this->board->id));
     }
 
     public function render()

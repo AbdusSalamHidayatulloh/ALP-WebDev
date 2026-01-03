@@ -105,7 +105,12 @@ function subscribedToBoard(boardId) {
             );
             Livewire.dispatch("member_action", { member: e.member });
             Livewire.dispatch("member_action_done");
-        });
+        })
+
+        .listen(".CustomFieldBoard", (e) => {
+            console.log("Testing for the board's update on the custom fields ", e)
+            Livewire.dispatch('field-updated');
+        })
 }
 
 const userId = document
