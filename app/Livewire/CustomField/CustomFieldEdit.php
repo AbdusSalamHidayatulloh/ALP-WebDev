@@ -24,15 +24,15 @@ class CustomFieldEdit extends Component
     public $originalFieldType;
     public $originalOptions = [];
     
-    public $fieldDeleted = false;
+    public $skipRender = false;
 
-    protected $listeners = [
-        'field-updated' => 'refresh',
-    ];
+    // Remove ALL listeners - parent will handle refreshes
+    protected $listeners = [];
 
     public function mount(CustomField $field)
     {
         if (!$field->exists) {
+            $this->skipRender = true;
             return;
         }
         
@@ -42,6 +42,14 @@ class CustomFieldEdit extends Component
         $this->fieldType = $field->type;
         $this->loadOptions();
         $this->saveOriginalState();
+    }
+
+    public function dehydrate()
+    {
+        // Prevent Livewire from trying to serialize a deleted model
+        if ($this->skipRender) {
+            $this->field = null;
+        }
     }
 
     public function saveOriginalState()
@@ -62,7 +70,7 @@ class CustomFieldEdit extends Component
 
     public function toggleEditMode()
     {
-        if ($this->fieldDeleted) {
+        if ($this->skipRender) {
             return;
         }
 
@@ -139,7 +147,7 @@ class CustomFieldEdit extends Component
 
     public function updateField()
     {
-        if ($this->fieldDeleted || !$this->field->exists) {
+        if ($this->skipRender || !$this->field || !$this->field->exists) {
             session()->flash('error', 'Field no longer exists');
             return;
         }
@@ -179,36 +187,12 @@ class CustomFieldEdit extends Component
         $this->saveOriginalState();
         
         broadcast(new CustomFieldBoard($this->board->id))->toOthers();
-        $this->dispatch('field-updated');
-    }
-
-    public function refresh()
-    {
-        try {
-            $field = CustomField::find($this->field->id);
-            
-            if (!$field) {
-                $this->fieldDeleted = true;
-                return;
-            }
-            
-            $this->field = $field;
-            
-            // Only update if NOT in edit mode
-            if (!$this->editMode) {
-                $this->fieldTitle = $this->field->title;
-                $this->fieldType = $this->field->type;
-                $this->loadOptions();
-                $this->saveOriginalState();
-            }
-        } catch (\Exception $e) {
-            $this->fieldDeleted = true;
-        }
     }
 
     public function render()
     {
-        if ($this->fieldDeleted || !$this->field || !$this->field->exists) {
+        // Don't render if component should be removed
+        if ($this->skipRender) {
             return <<<'HTML'
             <div style="display: none;"></div>
             HTML;

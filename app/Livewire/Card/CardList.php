@@ -42,7 +42,9 @@ class CardList extends Component
         'cards-reordered' => 'reorderCards',
         'card-refreshed' => 'refreshCards',
         'card-action-refresh' => 'refreshCards',
-        'open-card-modal' => 'openCardFromId', // Add this
+        'open-card-modal' => 'openCardFromId',
+
+        'echo-private:board.{list.board.id},CustomFieldBoard' => 'handleCustomFieldChange',
 
         //Labels
         'create-label'  => 'openCreateLabel',
@@ -100,14 +102,39 @@ class CardList extends Component
     public function refreshSelectedCard()
     {
         logger("This is called");
-        if (! $this->selectedCard) return;
+        if (!$this->selectedCard) return;
 
-        $this->selectedCard = Card::with('list.board', 'comments', 'customFields')->find($this->selectedCard->id);
+        try {
+            // Load card with only existing custom fields
+            $card = Card::with([
+                'list.board',
+                'comments',
+                'customFields' => function ($query) {
+                    // This prevents loading deleted custom fields
+                    $query->whereExists(function ($q) {
+                        $q->selectRaw(1)
+                            ->from('custom_fields')
+                            ->whereColumn('custom_fields.id', 'field_cards.custom_field_id');
+                    });
+                }
+            ])->find($this->selectedCard->id);
 
-        $this->cardTitle = $this->selectedCard->card_title;
-        $this->cardDescription = $this->selectedCard->description;
-        $this->cardImage = $this->selectedCard->image;
-        logger("if this not seen, then the other screen shouldn't");
+            if (!$card) {
+                $this->closeCard();
+                return;
+            }
+
+            $this->selectedCard = $card;
+            $this->cardTitle = $this->selectedCard->card_title;
+            $this->cardDescription = $this->selectedCard->description;
+            $this->cardImage = $this->selectedCard->image;
+
+            logger("Card refreshed successfully");
+        } catch (\Exception $e) {
+            logger("Error refreshing card: " . $e->getMessage());
+            // Don't close the card, just refresh without the deleted field
+            $this->selectedCard = $this->selectedCard->fresh(['list.board', 'comments']);
+        }
     }
 
     public function showForm()
@@ -324,7 +351,7 @@ class CardList extends Component
         ]);
 
         Log::create([
-            'board_id'=> $board->id,
+            'board_id' => $board->id,
             'user_id' => Auth::id(),
             'loggable_type' => Card::class,
             'loggable_id' => $this->selectedCard->id,
@@ -354,7 +381,7 @@ class CardList extends Component
         ]);
 
         Log::create([
-            'board_id'=> $board->id,
+            'board_id' => $board->id,
             'user_id' => Auth::id(),
             'loggable_type' => Card::class,
             'loggable_id' => $this->selectedCard->id,
