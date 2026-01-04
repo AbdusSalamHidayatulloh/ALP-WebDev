@@ -67,9 +67,15 @@ function subscribedToBoard(boardId) {
         .listen(".ListDeleted", (e) => {
             Livewire.dispatch("list-deleted", { listId: e.listId });
         })
-
-        //NON GLOBAL EVENTS
-        //hanya diwindow sedang terbuka, tidak bisa keluar
+        
+        .listen(".card.template.updated", (e) => {
+            console.log('Template update received:', e.action, e.template);
+            Livewire.dispatch("template-action", { 
+                action: e.action, 
+                template: e.template 
+            });
+        })
+        
         .listen(".BoardRenamed", (e) => {
             Livewire.dispatch("board-renamed", { board: e.board });
         })
