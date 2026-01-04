@@ -2,6 +2,7 @@
 
 namespace App\Livewire\CardTemplate;
 
+use App\Events\CardTemplateUpdated;
 use App\Events\Card\CardActions;
 use App\Models\Card;
 use App\Models\CardTemplate;
@@ -23,21 +24,21 @@ class CardTemplateUse extends Component
     {
         $this->board = $board;
         $this->template = $template;
-        
+
         // FIX: Load lists properly with the relationship
         $this->lists = ListCard::where('board_id', $board->id)
-                              ->orderBy('position')
-                              ->get();
+            ->orderBy('position')
+            ->get();
     }
 
     public function openModal()
     {
         $this->showModal = true;
-        
+
         // Refresh lists when opening modal (in case lists were added/removed)
         $this->lists = ListCard::where('board_id', $this->board->id)
-                              ->orderBy('position')
-                              ->get();
+            ->orderBy('position')
+            ->get();
     }
 
     public function closeModal()
@@ -113,12 +114,16 @@ class CardTemplateUse extends Component
         ]);
 
         // Broadcast the change
-        broadcast(new CardActions($this->board->id));
-
+        broadcast(new CardTemplateUpdated(
+            $this->board->id,
+            'used',
+            $this->template
+        ))->toOthers();
+        
         $this->closeModal();
-        
+
         session()->flash('message', 'Card created from template successfully');
-        
+
         $this->dispatch('template-used');
         $this->dispatch('card-refreshed'); // Add this to refresh the board
     }

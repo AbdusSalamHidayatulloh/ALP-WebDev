@@ -2,6 +2,7 @@
 
 namespace App\Livewire\CardTemplate;
 
+use App\Events\CardTemplateUpdated;
 use App\Models\CardTemplate;
 use App\Models\Log;
 use Illuminate\Support\Facades\Auth;
@@ -66,7 +67,6 @@ class CardTemplateCreate extends Component
         }
     }
 
-    // CHANGE: Update method for single label selection
     public function selectLabel($labelId)
     {
         // If clicking the same label, deselect it
@@ -141,6 +141,12 @@ class CardTemplateCreate extends Component
             'loggable_id' => $template->id,
             'details' => $action . ' card template: "' . $this->cardTitle . '"',
         ]);
+
+        broadcast(new CardTemplateUpdated(
+            $this->board->id,
+            $action,
+            $template->load(['labels', 'customFields'])
+        ))->toOthers();
 
         $this->dispatch('template-saved');
 

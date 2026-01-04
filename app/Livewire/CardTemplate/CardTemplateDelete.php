@@ -2,6 +2,7 @@
 
 namespace App\Livewire\CardTemplate;
 
+use App\Events\CardTemplateUpdated; // ADD THIS
 use App\Models\CardTemplate;
 use App\Models\Log;
 use Illuminate\Support\Facades\Auth;
@@ -26,6 +27,7 @@ class CardTemplateDelete extends Component
 
         $templateTitle = $this->template->card_title;
         $boardId = $this->template->board_id;
+        $templateId = $this->template->id;
 
         // Delete image if exists
         if ($this->template->image && Storage::disk('public')->exists($this->template->image)) {
@@ -37,12 +39,17 @@ class CardTemplateDelete extends Component
 
         // Create log
         Log::create([
-            'board_id' => $boardId,
             'user_id' => Auth::id(),
             'loggable_type' => CardTemplate::class,
-            'loggable_id' => $this->template->id,
+            'loggable_id' => $templateId,
             'details' => 'Deleted card template: "' . $templateTitle . '"',
         ]);
+
+        broadcast(new CardTemplateUpdated(
+            $boardId,
+            'deleted',
+            ['id' => $templateId]
+        ))->toOthers();
 
         $this->dispatch('template-deleted');
         
