@@ -117,8 +117,8 @@ function subscribedToBoard(boardId) {
         })
 
         .listen(".CustomFieldBoard", (e) => {
-            Livewire.dispatch("field-updated");
-            Livewire.dispatch("refresh-fields");
+            console.log('Custom field board update received');
+            Livewire.dispatch("custom-field-list-refresh");
         })
 
         .listen(".CardTemplateUpdated", (e) => {

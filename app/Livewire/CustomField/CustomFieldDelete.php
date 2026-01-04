@@ -30,6 +30,9 @@ class CustomFieldDelete extends Component
         $customFieldId = $this->field->id;
         $boardId = $this->board->id;
 
+        // IMPORTANT: Dispatch BEFORE deleting so components can prepare
+        $this->dispatch('field-deleting', fieldId: $customFieldId)->to(CustomFieldList::class);
+        
         // Delete the field
         $this->field->delete();
 
@@ -40,11 +43,8 @@ class CustomFieldDelete extends Component
             'loggable_id' => $customFieldId,
             'details' => 'Deleted custom field "' . $customFieldName . '"',
         ]);
-
-        // Dispatch to parent to remove this component from DOM
-        $this->dispatch('field-deleted', fieldId: $customFieldId);
         
-        // Then broadcast to others
+        // Broadcast to other windows/users
         broadcast(new CustomFieldBoard($boardId))->toOthers();
         
         session()->flash('message', 'Field deleted successfully');
