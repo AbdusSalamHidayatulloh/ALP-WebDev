@@ -118,7 +118,12 @@ function subscribedToBoard(boardId) {
 
         .listen(".CustomFieldBoard", (e) => {
             Livewire.dispatch("field-updated");
-        });
+        })
+
+        .listen(".CardTemplateUpdated", (e) => {
+            console.log("Card template has been changed ",e);
+            Livewire.dispatch('template-saved');
+        }) 
 }
 
 const userId = document
@@ -178,7 +183,6 @@ Livewire.on("card-entering", ({ cardId }) => {
         })
         
         .listen(".LabelCardsAction", (e) => {
-            console.log("Labels have been changed", e);
             Livewire.dispatch("label-saved");
             currentCardChannel = null;
         })

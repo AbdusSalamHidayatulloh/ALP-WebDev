@@ -3,6 +3,7 @@
 namespace App\Livewire\CardTemplate;
 
 use App\Events\CardTemplateUpdated;
+use App\Models\Board;
 use App\Models\CardTemplate;
 use App\Models\Log;
 use Illuminate\Support\Facades\Auth;
@@ -15,6 +16,7 @@ class CardTemplateCreate extends Component
     use WithFileUploads;
 
     public $board;
+    public $boardId;
     public $templateId = null;
     public $cardTitle;
     public $description;
@@ -30,6 +32,7 @@ class CardTemplateCreate extends Component
     public function mount($board, $templateId = null)
     {
         $this->board = $board;
+        $this->boardId = $board->id;
         $this->availableLabels = $board->labels;
         $this->customFields = $board->customFields;
 
@@ -80,6 +83,8 @@ class CardTemplateCreate extends Component
 
     public function save()
     {
+        $boardIn = Board::find($this->boardId);
+        
         $this->validate([
             'cardTitle' => 'required|string|max:255',
             'description' => 'nullable|string|max:1000',
@@ -143,7 +148,7 @@ class CardTemplateCreate extends Component
         ]);
 
         broadcast(new CardTemplateUpdated(
-            $this->board->id,
+            $boardIn->id,
             $action,
             $template->load(['labels', 'customFields'])
         ))->toOthers();

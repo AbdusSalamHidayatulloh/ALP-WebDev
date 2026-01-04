@@ -4,6 +4,7 @@ namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
@@ -25,7 +26,7 @@ class CardTemplateUpdated implements ShouldBroadcast
 
     public function broadcastOn()
     {
-        return new Channel('board.' . $this->boardId);
+        return new PrivateChannel('board.' . $this->boardId);
     }
 
     public function broadcastAs()
