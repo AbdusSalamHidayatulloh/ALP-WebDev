@@ -17,6 +17,7 @@ class CardTemplateList extends Component
         'template-saved' => 'refreshTemplates',
         'template-deleted' => 'refreshTemplates',
         'template-used' => 'refreshTemplates',
+        'template-action' => 'handleTemplateAction',
     ];
 
     public function mount(Board $board)
@@ -48,6 +49,11 @@ class CardTemplateList extends Component
     {
         $this->showForm = false;
         $this->editingTemplateId = null;
+    }
+    
+    public function handleTemplateAction($action, $template)
+    {
+        $this->dispatch('$refresh');
     }
 
     public function render()
