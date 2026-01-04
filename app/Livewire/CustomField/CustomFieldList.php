@@ -15,6 +15,8 @@ class CustomFieldList extends Component
     protected $listeners = [
         'field-deleting' => 'handleFieldDeleting',
         'custom-field-list-refresh' => 'refreshFields',
+        'field-updated' => 'refreshFields', // Add this back for creation
+        'echo-private:board.{board.id},CustomFieldBoard' => 'handleBroadcast', // Add this back
     ];
 
     public function mount(Board $board)

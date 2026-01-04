@@ -23,7 +23,7 @@ class CustomFieldEdit extends Component
     public $originalFieldTitle;
     public $originalFieldType;
     public $originalOptions = [];
-    
+
     public $skipRender = false;
 
     // Remove ALL listeners - parent will handle refreshes
@@ -35,7 +35,7 @@ class CustomFieldEdit extends Component
             $this->skipRender = true;
             return;
         }
-        
+
         $this->field = $field;
         $this->board = $field->board;
         $this->fieldTitle = $field->title;
@@ -85,7 +85,7 @@ class CustomFieldEdit extends Component
             $this->saveOriginalState();
             $this->loadOptions();
         }
-        
+
         $this->editMode = !$this->editMode;
     }
 
@@ -185,7 +185,11 @@ class CustomFieldEdit extends Component
 
         $this->editMode = false;
         $this->saveOriginalState();
-        
+
+        // Dispatch to refresh the list on current window
+        $this->dispatch('custom-field-list-refresh')->to(CustomFieldList::class);
+
+        // Broadcast to other windows
         broadcast(new CustomFieldBoard($this->board->id))->toOthers();
     }
 
